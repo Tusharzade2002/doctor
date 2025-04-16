@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 const Registration = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,6 +10,7 @@ const Registration = () => {
     phonenumber:"",
     hIN:""
   });
+      
 
   return (
     <div>
