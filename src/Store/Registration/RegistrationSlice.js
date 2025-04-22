@@ -1,35 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getLoginData } from "./RegistrationThunk";
-import { stackTraceLimit } from "postcss/lib/css-syntax-error";
+import { registerUser , loginUser } from "./RegistrationThunk";
  
-const initialData={
-    login:{},
-    status:"loading",
-    error:null,
-    filter:{}
-};
+const initialState = {
+    user: null,
+    loading: false,
+    error: null,
+  };
 
-const loginSlice=createSlice({
-    name:"login",
-    initialData,
-    reducers:{
-        setFilter:(state,action)=>{
-                      state.filter ={...state.filter, ...action.payload};
+const RegistrationSlice=createSlice({
+    name:"registration",
+    initialState,
+    reducers: {
+        logout: (state) => {
+          state.user = null;
+          state.error = null;
+         
+          localStorage.removeItem("users");
         }
-    },
-    extraReducers:(builder)=>{
-        builder.addCase(getLoginData.pending,(state)=>{
+        },
+        extraReducers:(builder)=>{
+        builder.addCase(registerUser.pending,(state)=>{
             state.status="loading"
         })
-        .addCaseCase(getLoginData.fulfilled,(state,action)=>{
+        .addCase(registerUser.fulfilled,(state,action)=>{
             state.status ="succeeded",
-            state.login=action.payload;
+            state.user=action.payload;
         })
-        .addCase(getLoginData.rejected,(state)=>{
+        .addCase(registerUser.rejected,(state)=>{
             state.status="failed",
             state.error=action.error.message;
         })
+
+        .addCase(loginUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+          })
+          .addCase(loginUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload; 
+          })
+          .addCase(loginUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            
+          })
     }
 })
-export const {setFilter}=productSlice.actions;
-export default loginSlice.reducer;
+export const {setFilter}=RegistrationSlice.actions;
+export default RegistrationSlice.reducer;
