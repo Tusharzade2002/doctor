@@ -22,3 +22,11 @@ export const loginUser = createAsyncThunk(
     } 
   }
     )
+   export  const getConsltantData = createAsyncThunk("auth/getConsltantData",async (id,thunkAPI)=>{
+      try{
+        const response =await axios.get("http://localhost:8000/admin/getallconsultant");
+        return response.data;
+      }catch(err){
+        return thunkAPI.rejectWithValue(err.response?.data?.message || 'Login failed');
+      }
+    })

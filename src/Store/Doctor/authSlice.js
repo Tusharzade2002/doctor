@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerDoctor, loginDoctor } from "./authThunk";
+import { registerDoctor ,LoginDoctor} from "./authThunk";
 
 
 const initialState = {
@@ -30,5 +30,19 @@ const initialState = {
                 state.status="failed",
                 state.error=action.error.message;
             })
+
+            .addCase(LoginDoctor.pending,(state)=>{
+                    state.status="loading"
+            })
+            .addCase(LoginDoctor.fulfilled,(state,action)=>{
+                state.status ="successded",
+                state.data=action.payload;
+            })
+            .addCase(LoginDoctor,rejected,(state)=>{
+                state.state="failed",
+                state.error = action.payload;
+            })
         }
     })
+    export const {setFilter}=DoctorSlice.actions;
+    export default DoctorSlice.reducer;

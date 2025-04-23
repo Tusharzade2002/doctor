@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser , loginUser } from "./RegistrationThunk";
+import { registerUser , loginUser ,getConsltantData} from "./RegistrationThunk";
  
 const initialState = {
     user: null,
@@ -42,7 +42,18 @@ const RegistrationSlice=createSlice({
           .addCase(loginUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-            
+          })
+
+          .addCase(getConsltantData.pending,(state)=>{
+            state.status="loading"
+          })
+          .addCase(getConsltantData.fulfilled,(state,action)=>{
+            state.status ="succeeded",
+            state.user=action.payload;
+          })
+          .addCase(getConsltantData.rejected,(state)=>{
+            state.status="failed",
+            state.error=action.error.message;
           })
     }
 })

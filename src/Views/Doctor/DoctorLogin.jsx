@@ -1,10 +1,30 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { LoginDoctor } from '../../Store/Doctor/authThunk';
+import toast from 'react-hot-toast';
 function DoctorLogin() {
-  return (
+ const dispatch =useDispatch();
+   const [formData,SetformData]=useState({
+          username:"",
+          password:""
+   })
+      const handlesubmit = async (e)=>{
+            e.preventDefault();
+
+             try{
+                const  DoctorUser =await dispatch(LoginDoctor({username,password})).unwrap();
+                localStorage.setItem("Doctoruser",JSON.stringify(DoctorUser));
+                 SetformData("");
+                 toast.success("Doctor Login Successfully...")
+               
+             }catch(err){
+                toast.error(err.messsge)
+             }
+      }
+   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form className="p-6 space-y-4 bg-white rounded shadow-md w-80">
-        <h2 className="text-2xl font-semibold text-center">Login</h2>
+      <form onSubmit={handlesubmit} className="p-6 space-y-4 bg-white rounded shadow-md w-80">
+        <h2 className="text-2xl font-semibold text-center">Doctor Login</h2>
 
         {/* {(error || message) && (
           <p className="text-sm text-center text-red-500">
@@ -16,16 +36,15 @@ function DoctorLogin() {
           type="text"
           placeholder="Username"
           className="w-full p-2 border rounded"
-        //   value={username}
-        //   onChange={(e) => setUsername(e.target.value)}
+        value={formData.username}
+    onChange={SetformData(...formData,[e.target.name]=e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
           className="w-full p-2 border rounded"
-        //   value={password}
-        //   autoComplete="current-password"
-        //   onChange={(e) => setPassword(e.target.value)}
+         value={formData.password}
+         onChange={SetformData(...formData,[e.target.name]=e.target.value)}
         />
         <button
           type="submit"
@@ -35,9 +54,7 @@ function DoctorLogin() {
         </button>
         <p className="text-sm text-center">
           Don't have an account?{' '}
-          <Link to="/doctor/registration" className="text-blue-500 underline">
-            Register
-          </Link>
+         
         </p>
       </form>
     
