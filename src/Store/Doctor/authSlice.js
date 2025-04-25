@@ -12,12 +12,10 @@ const initialState = {
     name:"docotor",
     initialState,
     reducers: {
-        logout: (state) => {
-          state.data = null;
-          state.error = null;
-          localStorage.removeItem("doctor");
-        }
+        setUser: (state, action) => {
+          state.user = action.payload;  
         },
+      },
         extraReducers:(builder)=>{
             builder.addCase(registerDoctor.pending,(state)=>{
                 state.status="loading"
@@ -26,7 +24,7 @@ const initialState = {
                 state.status ="succeeded",
                 state.data=action.payload;
             })
-            .addCase(registerDoctor.rejected,(state)=>{
+            .addCase(registerDoctor.rejected,(state,action)=>{
                 state.status="failed",
                 state.error=action.error.message;
             })
@@ -38,10 +36,10 @@ const initialState = {
                 state.status ="successded",
                 state.data=action.payload;
             })
-            .addCase(LoginDoctor,rejected,(state)=>{
-                state.state="failed",
-                state.error = action.payload;
-            })
+            .addCase(LoginDoctor.rejected, (state, action) => {  
+                state.status = 'failed';
+                state.error = action.error.message;
+              })
         }
     })
     export const {setFilter}=DoctorSlice.actions;

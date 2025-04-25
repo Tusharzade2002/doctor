@@ -8,6 +8,7 @@ function DoctorRegistration() {
     cIN: "",
     name: "",
     gender: "",
+    email:"",
     dateOfBirth: "",
     specialization: "",
     specialty:"",
@@ -129,7 +130,6 @@ toast.success("Registration Sucessfuly.... Login")
               }
             />
           </div>
-
           <div className="m-3">
             <input
               type="text"
@@ -190,7 +190,18 @@ toast.success("Registration Sucessfuly.... Login")
               }
             />
           </div>
-
+          <div className="m-3">
+            <input
+              type="email"
+              name="email"
+              placeholder="email"
+              className="border-2 border-gray-300 rounded-md p-2"
+              value={formData.email} 
+              onChange={(e) =>
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+              }
+            />
+          </div>
           <button className="bg-blue-600 w-full py-2  rounded-sm" type="submit">
             Submit
           </button>

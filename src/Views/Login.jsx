@@ -22,6 +22,8 @@ function Login() {
 
     try {
       const user = await dispatch(loginUser({ username, password })).unwrap();
+      console.log(user);
+      
       localStorage.setItem('currentUser', JSON.stringify(user));
       setUsername('');
       setPassword('');

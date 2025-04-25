@@ -22,11 +22,27 @@ export const loginUser = createAsyncThunk(
     } 
   }
     )
-   export  const getConsltantData = createAsyncThunk("auth/getConsltantData",async (id,thunkAPI)=>{
+
+
+   export  const getConsltantData = createAsyncThunk("auth/getConsltantData",async (_,{rejectWithValue})=>{
       try{
-        const response =await axios.get("http://localhost:8000/admin/getallconsultant");
-        return response.data;
+        const user = JSON.parse(localStorage.getItem('currentUser'));  // Parse the string if it's stored as a string
+        const token = user?.token;
+
+      console.log(token);
+      
+ 
+        const response = await axios.get("http://localhost:8000/admin/getallconsultant", {
+          headers: {
+            Authorization : token
+          }
+        });
+      
+        return response.data.data;
+      
+
+      
       }catch(err){
-        return thunkAPI.rejectWithValue(err.response?.data?.message || 'Login failed');
+        return rejectWithValue(err.response?.data?.message || 'Login failed');
       }
     })

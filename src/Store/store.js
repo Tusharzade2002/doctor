@@ -5,7 +5,7 @@ import loginSlice from './Doctor/authSlice'
 const store = configureStore({
   reducer: {
    
-    auth : RegistrationSlice,
+    user : RegistrationSlice,
     auth : loginSlice
   },  
 });

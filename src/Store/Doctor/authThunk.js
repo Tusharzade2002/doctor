@@ -26,11 +26,11 @@ export const registerDoctor = createAsyncThunk(
 );
 
 // Login Doctor
-export  const LoginDoctor = createAsyncThunk("auth/LoginDoctor",async(formData,thunkAPI)=>{
+export  const LoginDoctor = createAsyncThunk("auth/LoginDoctor",async(formData,{rejectWithValue})=>{
     try{
       const response =await axios.post("http://localhost:8000/doctor/login",formData);
       return response.data
     }catch(err){
-      err.response?.data?.message || "Login Failed"
+      return rejectWithValue(err.response?.data?.message || 'Login failed');
     }
 })

@@ -3,6 +3,7 @@ import { registerUser , loginUser ,getConsltantData} from "./RegistrationThunk";
  
 const initialState = {
     user: null,
+    consultant:[],
     loading: false,
     error: null,
   };
@@ -49,9 +50,9 @@ const RegistrationSlice=createSlice({
           })
           .addCase(getConsltantData.fulfilled,(state,action)=>{
             state.status ="succeeded",
-            state.user=action.payload;
+            state.consultant=action.payload;
           })
-          .addCase(getConsltantData.rejected,(state)=>{
+          .addCase(getConsltantData.rejected,(state,action)=>{
             state.status="failed",
             state.error=action.error.message;
           })

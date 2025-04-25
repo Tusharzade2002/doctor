@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { LoginDoctor } from '../../Store/Doctor/authThunk';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 function DoctorLogin() {
+  const navigate = useNavigate()
  const dispatch =useDispatch();
    const [formData,SetformData]=useState({
           username:"",
@@ -10,17 +12,26 @@ function DoctorLogin() {
    })
       const handlesubmit = async (e)=>{
             e.preventDefault();
-
+ console.log("function called");
+ 
              try{
-                const  DoctorUser =await dispatch(LoginDoctor({username,password})).unwrap();
+                const  DoctorUser =await dispatch(LoginDoctor(formData)).unwrap();
                 localStorage.setItem("Doctoruser",JSON.stringify(DoctorUser));
+                console.log("token:",DoctorUser);
+                
                  SetformData("");
-                 toast.success("Doctor Login Successfully...")
+                toast.success("doctor .. login successfully")
+                setTimeout(()=>{
+                  navigate("/home")
+                },[3000])
                
              }catch(err){
-                toast.error(err.messsge)
+              console.log("errrorr",err);
+              
+           
              }
       }
+
    return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form onSubmit={handlesubmit} className="p-6 space-y-4 bg-white rounded shadow-md w-80">
@@ -34,17 +45,19 @@ function DoctorLogin() {
 
         <input
           type="text"
+          name="username"
           placeholder="Username"
           className="w-full p-2 border rounded"
         value={formData.username}
-    onChange={SetformData(...formData,[e.target.name]=e.target.value)}
+        onChange={(e)=>SetformData({...formData,[e.target.name]: e.target.value})}
         />
         <input
           type="password"
+          name='password'
           placeholder="Password"
           className="w-full p-2 border rounded"
          value={formData.password}
-         onChange={SetformData(...formData,[e.target.name]=e.target.value)}
+         onChange={(e)=>SetformData({...formData,[e.target.name]:e.target.value})}
         />
         <button
           type="submit"
