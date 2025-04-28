@@ -16,14 +16,17 @@ function Home() {
     if(decode.username) {
       setUsername(decode.username)
   }},[])
-    
-   const dispatch = useDispatch()
-     
-    const {data,status,error}= useSelector((state) => state.auth)
-    console.log("data",data);
-     useEffect(()=>{
-        dispatch(getConsltantData())
-     },[dispatch]) 
+   
+  
+
+  const dispatch = useDispatch();
+  const { data } = useSelector((state) => state.user);
+  console.log(data);
+
+
+  useEffect(() => {
+    dispatch(getConsltantData());
+  }, [dispatch]);
 
 
 
@@ -38,7 +41,7 @@ function Home() {
             <Link to="/home"><button className='hover:bg-blue-300 w-[90%] rounded-xl text-2xl hover:shadow-2xl my-5'> Home </button></Link>
            <Link > <button className='hover:bg-blue-300 w-[90%] rounded-xl text-2xl hover:shadow-2xl my-5'> Admin </button> </Link>
            <Link to="/doctor/registration"> <button className='hover:bg-blue-300 w-[90%] rounded-xl text-2xl hover:shadow-2xl my-5'> Doctor </button></Link>
-           <Link> <button className='hover:bg-blue-300 w-[90%] rounded-xl text-2xl hover:shadow-2xl my-5'> Consulatant </button></Link>
+           <Link to=""> <button className='hover:bg-blue-300 w-[90%] rounded-xl text-2xl hover:shadow-2xl my-5'> Respeanlist </button></Link>
            <Link> <button className='hover:bg-blue-300 w-[90%] rounded-xl text-2xl hover:shadow-2xl my-5'>pesent</button></Link>
          </div>
       </div>
@@ -53,13 +56,15 @@ function Home() {
                 <li className='m-3'>Logout</li>
             </ul>
          </nav>
-         <div>
+          <div>
             <h1>Home</h1>
             <p>Welcome to the home page!</p>
            <p>Username: {username}</p>
-
-
-         </div>
+           </div>
+           <div>
+     
+    </div>
+           
       </div>
            
     </div> 

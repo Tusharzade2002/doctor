@@ -13,14 +13,14 @@ function DoctorLogin() {
       const handlesubmit = async (e)=>{
             e.preventDefault();
  console.log("function called");
- 
+              
              try{
                 const  DoctorUser =await dispatch(LoginDoctor(formData)).unwrap();
                 localStorage.setItem("Doctoruser",JSON.stringify(DoctorUser));
                 console.log("token:",DoctorUser);
-                
-                 SetformData("");
                 toast.success("doctor .. login successfully")
+                 SetformData("");
+               
                 setTimeout(()=>{
                   navigate("/home")
                 },[3000])
@@ -70,7 +70,7 @@ function DoctorLogin() {
          
         </p>
       </form>
-    
+ 
     </div>
   )
 }

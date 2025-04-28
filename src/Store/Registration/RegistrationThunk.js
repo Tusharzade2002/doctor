@@ -29,7 +29,7 @@ export const loginUser = createAsyncThunk(
         const user = JSON.parse(localStorage.getItem('currentUser'));  // Parse the string if it's stored as a string
         const token = user?.token;
 
-      console.log(token);
+      console.log("token for getdata:",token);
       
  
         const response = await axios.get("http://localhost:8000/admin/getallconsultant", {

@@ -59,10 +59,7 @@ function AdminconsultantData() {
     </div>
     {status === "loading" && <p>Loading posts...</p>}
     {status === "failed" && <p style={{ color: "red" }}>Error: {error}</p>}
-         <div>
-            
-        
-         </div>
+         
   </div> 
   )
 }

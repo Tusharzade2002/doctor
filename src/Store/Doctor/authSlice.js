@@ -9,7 +9,7 @@ const initialState = {
 }
  
  const DoctorSlice=createSlice({
-    name:"docotor",
+    name:"auth",
     initialState,
     reducers: {
         setUser: (state, action) => {

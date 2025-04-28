@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../Store/Registration/RegistrationThunk';
-import toast, { Toaster } from 'react-hot-toast';
+
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,7 +27,6 @@ function Login() {
       localStorage.setItem('currentUser', JSON.stringify(user));
       setUsername('');
       setPassword('');
-      toast.success('Login successful!');
       setTimeout(() => {
         navigate('/home');
       }, 3000);
@@ -77,7 +76,7 @@ function Login() {
           </Link>
         </p>
       </form>
-    
+
     </div>
   );
 }

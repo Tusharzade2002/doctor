@@ -9,7 +9,7 @@ const initialState = {
   };
 
 const RegistrationSlice=createSlice({
-    name:"registration",
+    name:"user",
     initialState,
     reducers: {
         logout: (state) => {
@@ -45,6 +45,8 @@ const RegistrationSlice=createSlice({
             state.error = action.payload;
           })
 
+
+          //getconsultant Data
           .addCase(getConsltantData.pending,(state)=>{
             state.status="loading"
           })

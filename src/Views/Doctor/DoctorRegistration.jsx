@@ -26,7 +26,7 @@ function DoctorRegistration() {
     try {
       const response = await dispatch(registerDoctor(formData)).unwrap();
       console.log("Registration successful:", response);
-      
+      toast.success("Registration Successfully... Redirecting Login Page")
     } catch (error) {
       console.error("Error:", error);
     }
@@ -35,7 +35,7 @@ function DoctorRegistration() {
  useEffect(()=>{
     setTimeout(() => {
       navigate("/doctor/login");
- })
+ },[3000])
 },[handlesubmit])
 toast.success("Registration Sucessfuly.... Login")
   return (
