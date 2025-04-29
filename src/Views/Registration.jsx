@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../Store/Registration/RegistrationThunk";
-import toast from "react-hot-toast";
+import toast ,{Toaster}from "react-hot-toast";
 const Registration = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -155,6 +155,7 @@ const Registration = () => {
           </button>
         </div>
       </form>
+      <Toaster/>
     </div>
   );
 };
