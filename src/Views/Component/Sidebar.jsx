@@ -37,13 +37,13 @@ function Sidebar() {
               Receptionlist
             </button>
           </Link>
-          <Link to="">
+          <Link to="/appointment">
            
             <button className="hover:bg-blue-300  rounded-xl text-2xl hover:shadow-2xl my-4">
               Appointment
             </button>
           </Link>
-          <Link to="">
+          <Link to="/login">
             <button className="hover:bg-blue-300  rounded-xl text-2xl hover:shadow-2xl my-4">
               login
             </button>
@@ -55,12 +55,12 @@ function Sidebar() {
             </button>
           </Link>
 
-          <Link>
+          <Link to="/patientdetail">
             <button className="hover:bg-blue-300  rounded-xl text-2xl hover:shadow-2xl my-4">
               patient Details
             </button>
           </Link>
-          <Link>
+          <Link to="/department">
             <button className="hover:bg-blue-300  rounded-xl text-2xl hover:shadow-2xl my-4">
               Department
             </button>

@@ -52,8 +52,12 @@ function Home() {
           {status === "loading" && <p>Loading posts...</p>}
           {status === "failed" && (
             <p style={{ color: "red" }}>Error: {error}</p>
-          )}
-
+           )}
+   
+     <div>
+      <button className="bg-blue-600 px-7 py-2 rounded-md">Create</button>
+     </div>
+     
 <table class="table table-bordered w-full">
                 <thead>
                       <tr>
@@ -82,21 +86,8 @@ function Home() {
                    </tbody>
         </table>
 
-
-                 
-
-          {/* <ul>
-            {consultantdata.map((item, id) => (
-              <div className="flex border">
-                <p>{id}</p>
-                <li>{item.name}</li>
-                <p>{item.gender}</p>
-                <p>{}</p>
-              </div>
-            ))}
-          </ul> */}
         </div>
-        <div></div>
+       
       </div>
       <Toaster />
     </div>

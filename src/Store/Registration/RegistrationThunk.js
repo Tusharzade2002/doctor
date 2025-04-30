@@ -31,17 +31,12 @@ export const loginUser = createAsyncThunk(
 
       console.log("token for getdata:",token);
       
- 
         const response = await axios.get("http://localhost:8000/admin/getallconsultant", {
           headers: {
             Authorization : token
           }
         });
-      
         return response.data.data;
-      
-
-      
       }catch(err){
         return rejectWithValue(err.response?.data?.message || 'Login failed');
       }
