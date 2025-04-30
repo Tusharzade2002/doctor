@@ -26,7 +26,7 @@ export const loginUser = createAsyncThunk(
 
    export  const getConsltantData = createAsyncThunk("auth/getConsltantData",async (_,{rejectWithValue})=>{
       try{
-        const user = JSON.parse(localStorage.getItem('currentUser'));  // Parse the string if it's stored as a string
+        const user = JSON.parse(localStorage.getItem('currentUser'));  
         const token = user?.token;
 
       console.log("token for getdata:",token);
