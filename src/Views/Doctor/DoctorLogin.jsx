@@ -21,9 +21,9 @@ function DoctorLogin() {
                 toast.success("doctor .. login successfully")
                  SetformData("");
                
-                setTimeout(()=>{
-                  navigate("/home")
-                },[3000])
+                // setTimeout(()=>{
+                //   navigate("/home")
+                // },[3000])
                
              }catch(err){
               console.log("errrorr",err);

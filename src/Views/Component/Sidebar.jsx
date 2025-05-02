@@ -31,7 +31,7 @@ function Sidebar() {
              Patients
             </button>
           </Link>
-          <Link to="/doctor/registration">
+          <Link to="/receptionlist">
            
             <button className="hover:bg-blue-300 rounded-xl text-2xl hover:shadow-2xl my-4">
               Receptionlist

@@ -9,9 +9,9 @@ function Home() {
   const [username, setUsername] = useState("");
   localStorage.getItem("currentUser");
   const user = localStorage.getItem("currentUser");
-  console.log("user", user);
+  // console.log("user", user);
   const decode = jwtDecode(user);
-  console.log("decode", decode.username);
+  // console.log("decode", decode.username);
   useEffect(() => {
     if (decode.username) {
       setUsername(decode.username);
@@ -28,7 +28,7 @@ function Home() {
   useEffect(() => {
     setconsultantdata(consultant);
   }, [consultant]);
-  console.log(consultantdata);
+  // console.log(consultantdata);
   useEffect(() => {
     dispatch(getConsltantData());
   }, [dispatch]);
@@ -54,20 +54,23 @@ function Home() {
      password: "",
   });
 
-  const handlesubmit= async()=>{
+  const handlesubmit= async(e)=>{
           e.preventDefault();
           try{
                 const response =await dispatch(registerDoctor(formData)).unwrap();
                 console.log("doctor new data:",response);
-                     
+                setcreate(false)
+                     window.location.reload()
           }catch(err){
-                       console.log(err);
+                       console.log("error:",err);
                        
           }
   }
-useEffect(()=>{
-   console.log(formData);
-},[formData])
+// useEffect(()=>{
+//   const consultantadded=()=>{
+//     setcreate(false);
+//   }
+// })
   return (
     <div className="flex relative">
       <Sidebar className="z-0" />
@@ -101,6 +104,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">CIN:</div>
                     <input
                       type="number"
+                      name="cIN"
                       placeholder="CIN"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.cIN}
@@ -111,6 +115,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">Username:</div>
                     <input
                       type="text"
+                      name="username"
                       placeholder="username"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.username}
@@ -122,6 +127,7 @@ useEffect(()=>{
                     <div className="me-3">Name:</div>
                     <input
                       type="text"
+                      name="name"
                       placeholder="Name"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.name}
@@ -132,6 +138,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">Gender:</div>
                     <input
                       type="text"
+                      name="gender"
                       placeholder="Gender"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.gender}
@@ -148,6 +155,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">DOB:</div>
                     <input
                       type="date"
+                      name="dateOfBirth"
                       placeholder="DOB"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.dateOfBirth}
@@ -159,6 +167,7 @@ useEffect(()=>{
                     <input
                       type="text"
                       placeholder="Specialty"
+                      name="specialty"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.specialty}
                       onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
@@ -168,6 +177,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">Medical License Number:</div>
                     <input
                       type="text"
+                      name="medicalLicenseNumber"
                       placeholder="Medical License Number"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.medicalLicenseNumber}
@@ -178,6 +188,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">years Of Experience:</div>
                     <input
                       type="text"
+                      name="yearsOfExperience"
                       placeholder="years Of Experience"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.yearsOfExperience}
@@ -188,6 +199,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">Phone Number:</div>
                     <input
                       type="number"
+                      name="phoneNumber"
                       placeholder="Phone Number"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.phoneNumber}
@@ -199,6 +211,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">Password:</div>
                     <input
                       type="password"
+                      name="password"
                       placeholder="Password"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.password}
@@ -210,6 +223,7 @@ useEffect(()=>{
                     <div className="me-3 text-lg">email:</div>
                     <input
                       type="email"
+                      name="email"
                       placeholder="email"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.email}
@@ -218,10 +232,11 @@ useEffect(()=>{
                   </div>
 
                   <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">email:</div>
+                    <div className="me-3 text-lg">Specialization:</div>
                     <input
                       type="text"
                       placeholder="specialization"
+                      name="specialization"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.specialization}
                       onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
@@ -229,9 +244,10 @@ useEffect(()=>{
                   </div>
 
                   <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">email:</div>
+                    <div className="me-3 text-lg">Qualifications:</div>
                     <input
                       type="text"
+                      name="qualifications"
                       placeholder="qualifications"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.qualifications}
@@ -244,7 +260,6 @@ useEffect(()=>{
                   <button
                     type="submit"
                     className=" bg-blue-600 px-7 py-2 rounded-md"
-                    onClick={Createconslutent}
                   >
                     Create
                   </button>

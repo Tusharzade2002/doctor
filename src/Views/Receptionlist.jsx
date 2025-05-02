@@ -1,0 +1,14 @@
+import React from 'react'
+import Sidebar from './Component/Sidebar'
+function Receptionlist() {
+  return (
+    <div className='flex'>
+    <Sidebar/>
+   <div> 
+   <h1>Receptionlist</h1> 
+    </div>
+</div>
+  )
+}
+
+export default Receptionlist
