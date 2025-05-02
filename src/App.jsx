@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
 import Login from './Views/Login'
-import Home from './Views/Home'
+import Home from './Views/Consultant'
 import  Registration from './Views/Registration'
 // import DoctorLogin from './Views/Doctor/DoctorLogin';
 // import DoctorRegistration from './Views/Doctor/DoctorRegistration';
@@ -26,7 +26,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard/>} />
       <Route path="/patient" element={<Patient/>} />
       <Route path="/appointment" element={<Appointment/>} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/consultant" element={<Home />} />
       <Route path="/*" element={<NotFound />} />
       <Route path="/patientdetail" element={<PatientDetail />} /> 
        <Route path="/department" element={<Department />} />
