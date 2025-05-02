@@ -28,7 +28,7 @@ function Home() {
   useEffect(() => {
     setconsultantdata(consultant);
   }, [consultant]);
-  // console.log(consultantdata);
+  console.log(consultantdata);
   useEffect(() => {
     dispatch(getConsltantData());
   }, [dispatch]);
@@ -73,7 +73,7 @@ function Home() {
 // })
   return (
     <div className="flex relative">
-      <Sidebar className="z-0" />
+      <Sidebar />
 
       <div className="flex flex-col w-full">
         <div>

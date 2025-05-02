@@ -23,11 +23,16 @@ export const loginUser = createAsyncThunk(
   }
     )
 
+    const user = JSON.parse(localStorage.getItem('currentUser'));  
+        const token = user?.token;
 
+        
+
+//Get Consultant Data
    export  const getConsltantData = createAsyncThunk("auth/getConsltantData",async (_,{rejectWithValue})=>{
       try{
-        const user = JSON.parse(localStorage.getItem('currentUser'));  
-        const token = user?.token;
+        // const user = JSON.parse(localStorage.getItem('currentUser'));  
+        // const token = user?.token;
 
       console.log("token for getdata:",token);
       
@@ -38,6 +43,39 @@ export const loginUser = createAsyncThunk(
         });
         return response.data.data;
       }catch(err){
-        return rejectWithValue(err.response?.data?.message || 'Login failed');
+        return rejectWithValue(err.response?.data?.message || 'Failed to get data');
+      }
+    })
+
+
+//Get All Patients
+    export const getallPatient = createAsyncThunk("auth/getallPatient",async(_,{rejectWithValue})=>{
+      try{
+        // const user =JSON.parse(localStorage.getItem('currentUser'));
+        // const token =user?.token;
+        
+        const response =await axios.get("http://localhost:8000/admin/allreceptionist",{
+                    headers:{
+                      Authorization:token
+                    }
+        });
+        console.log(response.data.data);
+        
+        return response.data.data
+      }catch(err){
+               return rejectWithValue(err.response?.data?.message || "Failed to get data")
+      }
+    })
+
+    //GetAll Receptionlist
+    export const getallreception=createAsyncThunk("auth/getallreception",async(_,{rejectWithValue})=>{
+      try{
+        const response =await axios.get("localhost:8000/admin/allreceptionist",{
+               headers:{
+                Authorization:token
+               }
+        })
+      }catch(err){
+        return rejectWithValue(err.response?.data?.message || "Failed to get data")
       }
     })

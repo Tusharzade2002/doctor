@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser , loginUser ,getConsltantData} from "./RegistrationThunk";
+import { registerUser , loginUser ,getConsltantData ,getallPatient ,getallreception} from "./RegistrationThunk";
  
 const initialState = {
     user: null,
     consultant:[],
+    Patient:[],
     loading: false,
     error: null,
   };
@@ -57,6 +58,33 @@ const RegistrationSlice=createSlice({
           .addCase(getConsltantData.rejected,(state,action)=>{
             state.status="failed",
             state.error=action.error.message;
+          })
+
+          //getallpatients
+          .addCase(getallPatient.pending,(state)=>{
+            state.status="loading"
+          })
+          .addCase(getallPatient.fulfilled,(state,action)=>{
+            state.status="succeeded",
+            state.Patient=action.payload;
+          })
+          .addCase(getallPatient.rejected, (state, action) => {
+            state.loading = "failed";
+            state.error = action.error.message;
+          })
+
+
+          //get all getallreception
+          .addCase(getallreception.pending,(state)=>{
+            state.status="loading"
+          })
+          .addCase(getallreception.fulfilled,(state,action)=>{
+            state.status="succeeded",
+            state.consultant=action.payload;
+          })
+          .addCase(getallreception.rejected, (state, action) => {
+            state.loading = "failed";
+            state.error = action.error.message;
           })
     }
 })

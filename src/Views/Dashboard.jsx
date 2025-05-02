@@ -6,7 +6,7 @@ function Dashboard() {
     <div className='flex'>
          <Sidebar/>
          <div>
-               <h1>Side Bar</h1>
+               <h1>Dashboard</h1>
          </div>
     </div>
   )

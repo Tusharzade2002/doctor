@@ -5,7 +5,11 @@ function Department() {
     <div className="flex">
       
       <Sidebar />
-      <div>PatientDetail</div>
+      <div>
+      <div>Department</div>
+      <h1>http://localhost:8000/admin/alldepartment</h1>
+      <h1>http://localhost:8000/admin/createdepartment</h1>
+      </div>
     </div>
   );
 }

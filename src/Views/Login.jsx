@@ -30,7 +30,7 @@ function Login() {
       setUsername("");
       setPassword("");
       setTimeout(() => {
-        navigate("/home");
+        navigate("/dashboard");
       }, 3000);
     } catch (err) {
       // setMessage(typeof err === "string" ? err : "Login failed");
