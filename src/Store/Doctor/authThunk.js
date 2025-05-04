@@ -34,3 +34,20 @@ export  const LoginDoctor = createAsyncThunk("auth/LoginDoctor",async(formData,{
       return rejectWithValue(err.response?.data?.message || 'Login failed');
     }
 })
+
+  //delete Consultant
+  export const deleteconsultantById =createAsyncThunk("auth/deleteconsultantById",async(id,{rejectWithValue})=>{
+    try{
+      const user=JSON.parse(localStorage.getItem("currentUser"));
+      const token =user?.token;     
+      const response =await axios.delete(`http://localhost:8000/admin/deleteconsultant/${id}`,{
+        headers:{
+          Authorization:token
+        }
+      });
+      return id;
+     }catch(err){
+      return thunkAPI.rejectWithValue(err.response?.data?.message || 'deletation failed');
+
+     }
+  })

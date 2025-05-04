@@ -23,16 +23,14 @@ export const loginUser = createAsyncThunk(
   }
     )
 
-    const user = JSON.parse(localStorage.getItem('currentUser'));  
-        const token = user?.token;
-
+   
         
 
 //Get Consultant Data
    export  const getConsltantData = createAsyncThunk("auth/getConsltantData",async (_,{rejectWithValue})=>{
       try{
-        // const user = JSON.parse(localStorage.getItem('currentUser'));  
-        // const token = user?.token;
+        const user = JSON.parse(localStorage.getItem('currentUser'));  
+        const token = user?.token;
 
       console.log("token for getdata:",token);
       
@@ -51,15 +49,15 @@ export const loginUser = createAsyncThunk(
 //Get All Patients
     export const getallPatient = createAsyncThunk("auth/getallPatient",async(_,{rejectWithValue})=>{
       try{
-        // const user =JSON.parse(localStorage.getItem('currentUser'));
-        // const token =user?.token;
+        const user =JSON.parse(localStorage.getItem('currentUser'));
+        const token =user?.token;
         
-        const response =await axios.get("http://localhost:8000/admin/allreceptionist",{
+        const response =await axios.get("http://localhost:8000/admin/getallpatient",{
                     headers:{
                       Authorization:token
                     }
         });
-        console.log(response.data.data);
+        console.log("thunk data patient:",response.data.data);
         
         return response.data.data
       }catch(err){
@@ -70,12 +68,54 @@ export const loginUser = createAsyncThunk(
     //GetAll Receptionlist
     export const getallreception=createAsyncThunk("auth/getallreception",async(_,{rejectWithValue})=>{
       try{
-        const response =await axios.get("localhost:8000/admin/allreceptionist",{
+        const user = JSON.parse(localStorage.getItem('currentUser'));  
+        const token = user?.token;
+
+        const response =await axios.get("http://localhost:8000/admin/allreceptionist",{
                headers:{
                 Authorization:token
                }
         })
+        console.log(response.data.data);
+        
+        return response.data.data
       }catch(err){
         return rejectWithValue(err.response?.data?.message || "Failed to get data")
       }
+    })
+
+    //create reception list
+    export const registerReception =createAsyncThunk("auth/registerReception",async(formData,{rejectWithValue})=>{
+      try{
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+        const token=user?.token;
+        const response=await axios.post("http://localhost:8000/admin/registerreceptionist",formData,{
+          headers:{
+            Authorization:token
+          }
+        });
+        console.log(response.data.data);
+        
+        return response.data,data;
+      }catch(err){
+        return thunkAPI.rejectWithValue(err.response?.data?.message || 'Registration failed');
+
+      }
+    })
+
+    //delete Consultant
+    export const deleteconsultantById =createAsyncThunk("auth/deleteconsultantById",async(id,{rejectWithValue})=>{
+      try{
+        const user=JSON.parse(localStorage.getItem("currentUser"));
+        const token =user?.token;     
+        const response =await axios.delete(`http://localhost:8000/admin/deleteconsultant/${id}`,{
+          headers:{
+            Authorization:token
+          }
+        });
+        return id;
+       }catch(err){
+        return thunkAPI.rejectWithValue(err.response?.data?.message || 'deletation failed');
+
+       }
     })

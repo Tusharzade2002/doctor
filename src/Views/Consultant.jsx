@@ -1,10 +1,12 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
-import  {getConsltantData}  from "../Store/Registration/RegistrationThunk";
-import {registerDoctor} from '../Store/Doctor/authThunk'
-import {  useNavigate } from "react-router-dom";
+import { getConsltantData } from "../Store/Registration/RegistrationThunk";
+import { registerDoctor } from "../Store/Doctor/authThunk";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "./Component/Sidebar";
+import { Eye, SquarePen, Trash2 } from "lucide-react";
+import {deleteconsultantById} from '../Store/Registration/RegistrationThunk'
 function Home() {
   const [username, setUsername] = useState("");
   localStorage.getItem("currentUser");
@@ -28,7 +30,6 @@ function Home() {
   useEffect(() => {
     setconsultantdata(consultant);
   }, [consultant]);
-  console.log(consultantdata);
   useEffect(() => {
     dispatch(getConsltantData());
   }, [dispatch]);
@@ -39,38 +40,43 @@ function Home() {
   };
 
   const [formData, setFormData] = useState({
-     cIN: "", 
-     name: "",
-     gender: "",
-     email: "",
-     dateOfBirth: "",
-     specialization: "",
-     specialty: "",
-     qualifications: "",
-     medicalLicenseNumber: "",
-     phoneNumber: "",
-     yearsOfExperience: "",
-     username: "",
-     password: "",
+    cIN: "",
+    name: "",
+    gender: "",
+    email: "",
+    dateOfBirth: "",
+    specialization: "",
+    specialty: "",
+    qualifications: "",
+    medicalLicenseNumber: "",
+    phoneNumber: "",
+    yearsOfExperience: "",
+    username: "",
+    password: "",
   });
 
-  const handlesubmit= async(e)=>{
-          e.preventDefault();
-          try{
-                const response =await dispatch(registerDoctor(formData)).unwrap();
-                console.log("doctor new data:",response);
-                setcreate(false)
-                     window.location.reload()
-          }catch(err){
-                       console.log("error:",err);
-                       
-          }
-  }
-// useEffect(()=>{
-//   const consultantadded=()=>{
-//     setcreate(false);
-//   }
-// })
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await dispatch(registerDoctor(formData)).unwrap();
+      console.log("doctor new data:", response);
+      setcreate(false);
+      window.location.reload();
+    } catch (err) {
+      console.log("error:", err);
+    }
+  };
+  // useEffect(()=>{
+  //   const consultantadded=()=>{
+  //     setcreate(false);
+  //   }
+  // })
+
+  const handleDelete = (id) => {
+    
+      dispatch(deleteconsultantById(id));
+    window.location.reload()
+  };
   return (
     <div className="flex relative">
       <Sidebar />
@@ -98,7 +104,6 @@ function Home() {
           {create && (
             <div className="bg-slate-100 shadow-2xl rounded-md ms-10 absolute ">
               <form onSubmit={handlesubmit}>
-                
                 <div className="flex flex-wrap">
                   <div className="flex m-5 items-center">
                     <div className="me-3 text-lg">CIN:</div>
@@ -108,7 +113,12 @@ function Home() {
                       placeholder="CIN"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.cIN}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="flex m-5 items-center">
@@ -119,8 +129,12 @@ function Home() {
                       placeholder="username"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.username}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
-                   
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="flex m-5 items-center">
@@ -131,7 +145,12 @@ function Home() {
                       placeholder="Name"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.name}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="flex m-5 items-center">
@@ -142,7 +161,12 @@ function Home() {
                       placeholder="Gender"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.gender}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       list="genders"
                     />
                     <datalist id="genders">
@@ -159,7 +183,12 @@ function Home() {
                       placeholder="DOB"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.dateOfBirth}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="flex mx-4 m-5 items-center">
@@ -170,7 +199,12 @@ function Home() {
                       name="specialty"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.specialty}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="flex m-5 items-center">
@@ -181,7 +215,12 @@ function Home() {
                       placeholder="Medical License Number"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.medicalLicenseNumber}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="flex m-5 items-center">
@@ -192,7 +231,12 @@ function Home() {
                       placeholder="years Of Experience"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.yearsOfExperience}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="flex m-5 items-center">
@@ -203,7 +247,12 @@ function Home() {
                       placeholder="Phone Number"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.phoneNumber}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
@@ -215,7 +264,12 @@ function Home() {
                       placeholder="Password"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.password}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
@@ -227,7 +281,12 @@ function Home() {
                       placeholder="email"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.email}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
@@ -239,7 +298,12 @@ function Home() {
                       name="specialization"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.specialization}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
@@ -251,7 +315,12 @@ function Home() {
                       placeholder="qualifications"
                       className="border w-52 px-3 py-1 rounded-md"
                       value={formData.qualifications}
-                      onChange={(e)=>setFormData({...formData,[e.target.name]:e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -277,6 +346,7 @@ function Home() {
                 <th scope="col">Email</th>
                 <th scope="col">phone number</th>
                 <th scope="col">Gender</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -289,6 +359,13 @@ function Home() {
                     <td>{item.email}</td>
                     <td>{item.phoneNumber}</td>
                     <td>{item.gender}</td>
+                    <td>
+                      {" "}
+                      <div className="flex">
+                        <Eye /> <SquarePen />
+                       <div onClick={()=>handleDelete(item._id)}> <Trash2/></div>
+                      </div>
+                    </td>
                   </tr>
                 );
               })}

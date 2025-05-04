@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser , loginUser ,getConsltantData ,getallPatient ,getallreception} from "./RegistrationThunk";
+import { registerUser , loginUser ,getConsltantData ,getallPatient,getallreception,registerReception ,deleteconsultantById} from "./RegistrationThunk";
  
 const initialState = {
     user: null,
     consultant:[],
     Patient:[],
+    Reception:[],
     loading: false,
     error: null,
   };
@@ -72,20 +73,38 @@ const RegistrationSlice=createSlice({
             state.loading = "failed";
             state.error = action.error.message;
           })
-
-
-          //get all getallreception
+//get all Reception
           .addCase(getallreception.pending,(state)=>{
             state.status="loading"
           })
           .addCase(getallreception.fulfilled,(state,action)=>{
             state.status="succeeded",
-            state.consultant=action.payload;
+            state.Reception=action.payload;
           })
           .addCase(getallreception.rejected, (state, action) => {
             state.loading = "failed";
             state.error = action.error.message;
           })
+         
+// create Reception
+           .addCase(registerReception.pending,(state)=>{
+            state.status="loading"
+          })
+          .addCase(registerReception.fulfilled,(state,action)=>{
+            state.status="succeeded",
+            state.user=action.payload;
+          })
+          .addCase(registerReception.rejected, (state, action) => {
+            state.loading = "failed";
+            state.error = action.error.message;
+          })
+
+  //Delete Consultant
+  
+  .addCase(deleteconsultantById.fulfilled, (state, action) => {
+    state.data = state.data.filter((patient) => patient._id !== action.payload);
+  });
+
     }
 })
 export const {setFilter}=RegistrationSlice.actions;
