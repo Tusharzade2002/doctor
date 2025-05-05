@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser , loginUser ,getConsltantData ,getallPatient,getallreception,registerReception ,deleteconsultantById} from "./RegistrationThunk";
+import { registerUser , loginUser ,getConsltantData ,getallPatient,getallreception,registerReception ,deleteconsultantById,getConsltantDataById,updateConsltantDataById} from "./RegistrationThunk";
  
 const initialState = {
     user: null,
+    data:null,
+    consultantByid:[],
     consultant:[],
     Patient:[],
     Reception:[],
@@ -86,6 +88,21 @@ const RegistrationSlice=createSlice({
             state.error = action.error.message;
           })
          
+
+                      //Get consultant data by id
+
+          .addCase(getConsltantDataById.pending,(state)=>{
+            state.status="loading"
+          })
+          .addCase(getConsltantDataById.fulfilled,(state,action)=>{
+            state.status="succeeded",
+            state.consultantByid=action.payload;
+          })
+          .addCase(getConsltantDataById.rejected, (state, action) => {
+            state.loading = "failed";
+            state.error = action.error.message;
+          })
+
 // create Reception
            .addCase(registerReception.pending,(state)=>{
             state.status="loading"
@@ -99,13 +116,38 @@ const RegistrationSlice=createSlice({
             state.error = action.error.message;
           })
 
+
+          // upddate consultant data by id
+          .addCase(updateConsltantDataById.pending, (state) => {
+            state.status = "loading";
+            state.error = null;
+          })
+          .addCase(updateConsltantDataById.fulfilled, (state, action) => {
+            state.status = "succeeded";
+            state.data = action.payload;
+          })
+          .addCase(updateConsltantDataById.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.payload;
+          })    
+        
+         
+
   //Delete Consultant
-  
+  .addCase(deleteconsultantById.pending, (state) => {
+    state.status = "loading";
+  })
   .addCase(deleteconsultantById.fulfilled, (state, action) => {
     state.data = state.data.filter((patient) => patient._id !== action.payload);
-  });
+  })
+  .addCase(deleteconsultantById.rejected, (state, action) => {
+    state.status = "failed";
+    state.error = action.payload;
+  })
 
-    }
+
+  
+ }
 })
 export const {setFilter}=RegistrationSlice.actions;
 export default RegistrationSlice.reducer;

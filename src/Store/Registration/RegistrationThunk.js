@@ -119,3 +119,40 @@ export const loginUser = createAsyncThunk(
 
        }
     })
+
+    //get consltant by id cid
+    export const getConsltantDataById =createAsyncThunk("auth/getConsltantDataById",async(cIN,{rejectWithValue})=>{
+      try{
+      const user=JSON.parse(localStorage.getItem("currentUser"));
+      const token =user?.token; 
+      const response= await axios.get(`http://localhost:8000/admin/consutantbyid/${cIN}`,{
+        headers:{
+          Authorization:token
+        },
+      })
+      console.log(response.data.data);
+      
+      return response.data.data;
+       
+    }catch(err){
+      return thunkAPI.rejectWithValue(err.response?.data?.message || 'get data by id failed');
+    }
+    })
+
+    // //update consltant by id cid
+    export const updateConsltantDataById =createAsyncThunk("auth/updateConsltantDataById",async({id,updateData},{rejectWithValue})=>{
+      try{
+      const user=JSON.parse(localStorage.getItem("currentUser"));
+      const token =user?.token; 
+      const response= await axios.patch(`http://localhost:8000/admin/updateconsultant/${id}`,updateData,{
+        headers:{
+          Authorization:token
+        },
+      })
+      console.log(response);
+      return response;
+       
+    }catch(err){
+      return thunkAPI.rejectWithValue(err.response?.data?.message || 'get data by id failed');
+    }
+    })

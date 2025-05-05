@@ -5,10 +5,22 @@ import { getConsltantData } from "../Store/Registration/RegistrationThunk";
 import { registerDoctor } from "../Store/Doctor/authThunk";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Component/Sidebar";
-import { Eye, SquarePen, Trash2 } from "lucide-react";
-import {deleteconsultantById} from '../Store/Registration/RegistrationThunk'
+import { Eye, SquarePen, Trash2 ,X} from "lucide-react";
+import {
+  deleteconsultantById,
+  getConsltantDataById,
+  updateConsltantDataById,
+} from "../Store/Registration/RegistrationThunk";
+
 function Home() {
   const [username, setUsername] = useState("");
+   //get consultant data by id
+   const {consultant, status, error , consultantByid, data} = useSelector((state) => state.user);  
+   const [opendata, setopendata] = useState(false);
+  const [selectedItem ,Setselecteddata] =useState([])
+  const [editData, setEditData] = useState([])
+  const [selectedid, setSelectedId] = useState(null)
+  const[consultantDatabyId, setconsultantdataById] = useState([])
   localStorage.getItem("currentUser");
   const user = localStorage.getItem("currentUser");
   // console.log("user", user);
@@ -24,12 +36,17 @@ function Home() {
   const dispatch = useDispatch();
 
   //get consultant Data
-  const { consultant, status, error } = useSelector((state) => state.user);
+  
   const [consultantdata, setconsultantdata] = useState([]);
 
   useEffect(() => {
     setconsultantdata(consultant);
-  }, [consultant]);
+    if(consultantByid){
+      setconsultantdataById(consultantByid)
+    }
+  }, [consultant, consultantByid]);
+
+
   useEffect(() => {
     dispatch(getConsltantData());
   }, [dispatch]);
@@ -73,10 +90,38 @@ function Home() {
   // })
 
   const handleDelete = (id) => {
-    
-      dispatch(deleteconsultantById(id));
-    window.location.reload()
+    dispatch(deleteconsultantById(id));
+    window.location.reload();
   };
+ 
+
+
+// view consultant data by ID
+
+  const handleview = (cIN) => {
+    setopendata(!opendata);
+    dispatch(getConsltantDataById(cIN));
+
+  }
+   useEffect(() => {
+      Setselecteddata(consultantByid);
+    }, [consultantByid]);
+
+  console.log(consultantByid);
+  
+  
+
+  // update consultant data 
+  
+  const handleUpdate=(item)=>{
+    setcreate(true);
+       if(item){
+        dispatch (updateConsltantDataById({id: item._id,updatedata:formData}))
+       }
+  }
+
+
+
   return (
     <div className="flex relative">
       <Sidebar />
@@ -102,7 +147,10 @@ function Home() {
             </button>
           </div>
           {create && (
-            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 absolute ">
+            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 absolute">
+              <div  className="absolute right-8 top-6 bg-black text-white cursor-pointer" 
+               onClick={Createconslutent}
+              ><X/></div>
               <form onSubmit={handlesubmit}>
                 <div className="flex flex-wrap">
                   <div className="flex m-5 items-center">
@@ -112,7 +160,7 @@ function Home() {
                       name="cIN"
                       placeholder="CIN"
                       className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.cIN}
+                      value={editData.cIN || ''}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
@@ -128,7 +176,7 @@ function Home() {
                       name="username"
                       placeholder="username"
                       className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.username}
+                      value={formData.username }
                       onChange={(e) =>
                         setFormData({
                           ...formData,
@@ -336,6 +384,27 @@ function Home() {
               </form>
             </div>
           )}
+          {opendata && (
+            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-96 absolute px-28 py-7">
+              {selectedItem.map((item)=>{
+                       return( <div>
+                         <h1 className="text-xl m-2"><b>CIN:</b>{item.cIN}</h1>
+                         <h1 className="text-xl m-2"><b>Name:</b>{item.name}</h1>
+                         <h1 className="text-xl m-2"><b>Username:</b>{item.username}</h1>
+                         <h1 className="text-xl m-2"><b>Gender:</b>{item.gender}</h1>
+                         <h1 className="text-xl m-2"><b>Date Of Birth:</b>{item.dateOfBirth}</h1>
+                         <h1 className="text-xl m-2"><b>Phone Number:</b>{item.phoneNumber}</h1>
+                         <h1 className="text-xl m-2"><b>Qualifications:</b>{item.qualifications}</h1>
+                         <h1 className="text-xl m-2"><b>Specialty:</b>{item.specialty}</h1>
+                         <h1 className="text-xl m-2"><b>medicalLicenseNumber:</b>{item.medicalLicenseNumber}</h1>
+                         <h1 className="text-xl m-2"><b>medicalLicenseNumber:</b>{item.medicalLicenseNumber}</h1>
+                         <h1 className="text-xl m-2"><b>Years Of Experience:</b>{item.yearsOfExperience}</h1>
+                         <div className="text-center"> <button className= " mt-5 bg-blue-700 text-xl text-white rounded-md  px-3"  onClick={() => setopendata(!opendata)}>Cancel</button></div>
+                        </div>)
+              })}
+              
+            </div>
+          )}
 
           <table class="table table-bordered w-full">
             <thead>
@@ -360,10 +429,16 @@ function Home() {
                     <td>{item.phoneNumber}</td>
                     <td>{item.gender}</td>
                     <td>
-                      {" "}
                       <div className="flex">
-                        <Eye /> <SquarePen />
-                       <div onClick={()=>handleDelete(item._id)}> <Trash2/></div>
+                        <div className="cursor-pointer" onClick={() => handleview(item.cIN)}>
+                          <Eye />
+                        </div>
+                        <div className="cursor-pointer" onClick={() => handleUpdate(item)}>
+                          <SquarePen />
+                        </div>
+                        <div className="cursor-pointer" onClick={() => handleDelete(item._id)}>
+                          <Trash2 />
+                        </div>
                       </div>
                     </td>
                   </tr>
