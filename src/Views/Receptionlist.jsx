@@ -5,6 +5,7 @@ import { getallreception } from "../Store/Registration/RegistrationThunk";
 import {
   registerReception,
   getReceptionById,
+  deletereceptionById
 } from "../Store/Registration/RegistrationThunk";
 import { Eye, SquarePen, Trash2 } from "lucide-react";
 
@@ -64,6 +65,12 @@ function Receptionlist() {
 
   console.log(Receptionid);
 
+  //delete reception data by id
+
+  const handledelte=(id)=>{
+          dispatch(deletereceptionById(id))
+          window.location.reload();
+  }
   return (
     <div className="flex">
       <Sidebar />
@@ -239,12 +246,13 @@ function Receptionlist() {
           </div>
         )}
         {Isopen && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-30 right-10 ">
+          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[450px] absolute top-30 right-96 p-10 mx-12 ">
             {Object.entries(Receptionid).map(([key, value]) => (
               <p key={key}>
                 <strong>{key}:</strong> {value}
               </p>
             ))}
+         <div className="text-center ">   <button className="bg-blue-700 px-7 rounded-md py-1" onClick={()=>setIsopen(false)}>Cancel</button> </div>
           </div>
         )}
         <div>
@@ -282,12 +290,11 @@ function Receptionlist() {
                           <Eye />{" "}
                         </div>
                         <div className=" text-green-600 cursor-pointer">
-                          {" "}
-                          <SquarePen />
+                      <div >    <SquarePen /></div>
                         </div>
                         <div className="text-red-700 cursor-pointer">
                           {" "}
-                          <Trash2 />
+                         <div onClick={()=>handledelte(item._id)}><Trash2 /></div> 
                         </div>
                       </div>
                     </td>

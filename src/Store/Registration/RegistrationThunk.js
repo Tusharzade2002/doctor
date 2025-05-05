@@ -175,3 +175,19 @@ try{
 
     }
     })
+    // deleete reception bu Id
+    export const deletereceptionById =createAsyncThunk("auth/deletereceptionById",async(_id,{rejectWithValue})=>{
+      const user=JSON.parse(localStorage.getItem("currentUser"));
+      const token =user?.token; 
+      try{
+        const response = await axios.delete(`http://localhost:8000/admin//deletereceptionist/${_id}`,{
+           headers:{
+            Authorization:token
+           }
+        })
+
+      }catch(err){
+        return thunkAPI.rejectWithValue(err.response?.data?.message || 'failed to delete the data');
+
+      }
+    })

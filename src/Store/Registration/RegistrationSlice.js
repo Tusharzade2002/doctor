@@ -10,6 +10,7 @@ import {
   getConsltantDataById,
   updateConsltantDataById,
   getReceptionById,
+  deletereceptionById,
 } from "./RegistrationThunk";
 
 const initialState = {
@@ -157,7 +158,21 @@ const RegistrationSlice = createSlice({
       .addCase(getReceptionById.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.error.message;
-      });
+      })
+
+      //delete reception data by id
+      .addCase(deletereceptionById.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deletereceptionById.fulfilled, (state, action) => {
+        state.data = state.data.filter(
+          (patient) => patient._id !== action.payload
+        );
+      })
+      .addCase(deletereceptionById.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.error.message;
+      })
   },
 });
 export const { setFilter } = RegistrationSlice.actions;
