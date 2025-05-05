@@ -130,7 +130,7 @@ export const loginUser = createAsyncThunk(
           Authorization:token
         },
       })
-      console.log(response.data.data);
+      // console.log(response.data.data);
       
       return response.data.data;
        
@@ -154,5 +154,24 @@ export const loginUser = createAsyncThunk(
        
     }catch(err){
       return thunkAPI.rejectWithValue(err.response?.data?.message || 'get data by id failed');
+    }
+    })
+
+
+    //get reception By Id
+    export const getReceptionById =createAsyncThunk("auth/getReceptionById",async(rID,{rejectWithValue})=>{
+      const user=JSON.parse(localStorage.getItem("currentUser"));
+      const token =user?.token; 
+try{
+      const response=await axios.get(`http://localhost:8000/admin/receptionistbyid/${rID}`,{
+        headers:{
+          Authorization:token
+        }
+      })
+      // console.log(response.data.data);
+      return response.data.data
+    }catch(err){
+      return thunkAPI.rejectWithValue(err.response?.data?.message || 'get data by id failed');
+
     }
     })

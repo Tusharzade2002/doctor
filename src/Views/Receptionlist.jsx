@@ -2,12 +2,17 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "./Component/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getallreception } from "../Store/Registration/RegistrationThunk";
-import { registerReception } from "../Store/Registration/RegistrationThunk";
+import {
+  registerReception,
+  getReceptionById,
+} from "../Store/Registration/RegistrationThunk";
 import { Eye, SquarePen, Trash2 } from "lucide-react";
 
 function Receptionlist() {
   const dispatch = useDispatch();
-  const { Reception, status, error } = useSelector((state) => state.user);
+  const { Reception, status, error, ReceptionByid } = useSelector(
+    (state) => state.user
+  );
   const [Receptiondata, setReceptiondata] = useState([]);
 
   useEffect(() => {
@@ -23,6 +28,7 @@ function Receptionlist() {
   };
 
   const [formdata, setformdata] = useState({
+    rID: "",
     name: "",
     username: "",
     email: "",
@@ -44,6 +50,20 @@ function Receptionlist() {
       setcreate(false);
     }
   };
+
+  //Handle view
+  const [Isopen, setIsopen] = useState(false);
+  const [Receptionid, setReceptionid] = useState([]);
+  const handleview = (rID) => {
+    setIsopen(true);
+    dispatch(getReceptionById(rID));
+  };
+  useEffect(() => {
+    setReceptionid(ReceptionByid);
+  }, [ReceptionByid]);
+
+  console.log(Receptionid);
+
   return (
     <div className="flex">
       <Sidebar />
@@ -67,6 +87,23 @@ function Receptionlist() {
           <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-30 right-10 ">
             <form onSubmit={handlesubmit}>
               <div className="flex flex-wrap">
+                <div className="flex m-3 items-center">
+                  <div className="me-3">Name:</div>
+                  <input
+                    type="text"
+                    name="rID"
+                    placeholder="RID"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.rID}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
                 <div className="flex m-3 items-center">
                   <div className="me-3">Name:</div>
                   <input
@@ -140,7 +177,7 @@ function Receptionlist() {
                   />
                 </div>
                 <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">email:</div>
+                  <div className="me-3 text-lg">Phone Number:</div>
                   <input
                     type="number"
                     name="phoneNumber"
@@ -201,6 +238,15 @@ function Receptionlist() {
             </form>
           </div>
         )}
+        {Isopen && (
+          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-30 right-10 ">
+            {Object.entries(Receptionid).map(([key, value]) => (
+              <p key={key}>
+                <strong>{key}:</strong> {value}
+              </p>
+            ))}
+          </div>
+        )}
         <div>
           <table class="table table-bordered w-full">
             <thead>
@@ -219,7 +265,7 @@ function Receptionlist() {
               {Receptiondata.map((item, index) => {
                 return (
                   <tr>
-                    <th>{index + 1}</th>
+                    <th>{item.rID}</th>
                     <td>{item.name}</td>
                     <td>{item.username}</td>
                     <td>{item.email}</td>
@@ -228,9 +274,21 @@ function Receptionlist() {
                     <td>{item.gender}</td>
                     <td>
                       <div className="flex justify-around">
-                       <div onClick={handleview()} className="text-blue-700 cursor-pointer">   <Eye /> </div>
-                       <div className=" text-green-600 cursor-pointer"> <SquarePen /></div>
-                       <div className="text-red-700 cursor-pointer"> <Trash2 /></div>
+                        <div
+                          onClick={() => handleview(item.rID)}
+                          className="text-blue-700 cursor-pointer"
+                        >
+                          {" "}
+                          <Eye />{" "}
+                        </div>
+                        <div className=" text-green-600 cursor-pointer">
+                          {" "}
+                          <SquarePen />
+                        </div>
+                        <div className="text-red-700 cursor-pointer">
+                          {" "}
+                          <Trash2 />
+                        </div>
                       </div>
                     </td>
                   </tr>
