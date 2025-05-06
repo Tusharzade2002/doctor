@@ -5,9 +5,10 @@ import { getallreception } from "../Store/Registration/RegistrationThunk";
 import {
   registerReception,
   getReceptionById,
-  deletereceptionById
+  deletereceptionById,
+  updatereceptionBYid
 } from "../Store/Registration/RegistrationThunk";
-import { Eye, SquarePen, Trash2 } from "lucide-react";
+import { Eye, SquarePen, Trash2 , X} from "lucide-react";
 
 function Receptionlist() {
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ function Receptionlist() {
     setReceptionid(ReceptionByid);
   }, [ReceptionByid]);
 
-  console.log(Receptionid);
+  
 
   //delete reception data by id
 
@@ -71,6 +72,46 @@ function Receptionlist() {
           dispatch(deletereceptionById(id))
           window.location.reload();
   }
+ // update reception data by id 
+ const [updateformopen,setupdateformopen]=useState(false)
+ const [isEditMode, setIsEditMode] = useState(false);
+  const handleupdate=(id)=>{
+     setupdateformopen(!updateformopen);
+     const selectedReception = Reception.find((recep)=> recep.id === id);
+     if (selectedReception) {
+      setformdata({
+        rID: selectedReception.rID || "",
+        name: selectedReception.name || "",
+        username: selectedReception.username || "",
+        email: selectedReception.email || "",
+        phoneNumber: selectedReception.phoneNumber || "",
+        gender: selectedReception.gender || "",
+        dateOfBirth: selectedReception.dateOfBirth || "",
+        password: "", // You may not want to prefill password
+        _id: selectedReception._id,
+      });
+     }
+  }
+
+  const updatehandlesubmit=async(e)=>{
+    e.preventDefault();
+    try{
+      if(formdata._id){
+         await dispatch(updatereceptionBYid({formdata})).unwrap()    
+      }else{
+        await dispatch(registerReception(formdata)).unwrap()
+      }
+      setupdateformopen(false);
+      setIsEditMode(false)
+      window.location.reload()
+    }catch(err){
+ console.log("error:",err);
+ setupdateformopen(false)
+ setIsEditMode(false)
+
+    }
+  }
+
   return (
     <div className="flex">
       <Sidebar />
@@ -93,6 +134,163 @@ function Receptionlist() {
         {create && (
           <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-30 right-10 ">
             <form onSubmit={handlesubmit}>
+              <div onClick={()=>setcreate(false)} className="cursor-pointer absolute right-4 top-4 bg-black text-white" > <X/></div>
+              <div className="flex flex-wrap">
+                <div className="flex m-3 items-center">
+                  <div className="me-3">Name:</div>
+                  <input
+                    type="text"
+                    name="rID"
+                    placeholder="RID"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.rID}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex m-3 items-center">
+                  <div className="me-3">Name:</div>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.name}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex m-3 items-center">
+                  <div className="me-3 text-lg">Username:</div>
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="username"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.username}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex m-3 items-center">
+                  <div className="me-3 text-lg">Gender:</div>
+                  <input
+                    type="text"
+                    name="gender"
+                    placeholder="Gender"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.gender}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                    list="genders"
+                  />
+                  <datalist id="genders">
+                    <option value="Male"></option>
+                    <option value="Female"></option>
+                    <option value="Other"></option>
+                  </datalist>
+                </div>
+                <div className="flex m-3 mx-4 items-center">
+                  <div className="me-3 text-lg">DOB:</div>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    placeholder="DOB"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.dateOfBirth}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="flex m-3 items-center">
+                  <div className="me-3 text-lg">Phone Number:</div>
+                  <input
+                    type="number"
+                    name="phoneNumber"
+                    placeholder="phoneNumber"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.phoneNumber}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="flex m-3 items-center">
+                  <div className="me-3 text-lg">email:</div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="email"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.email}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="flex m-3 items-center">
+                  <div className="me-3 text-lg">Password:</div>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    className="border w-52 px-3 py-1 rounded-md"
+                    value={formdata.password}
+                    onChange={(e) =>
+                      setformdata({
+                        ...formdata,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+              <div className="block text-center my-4">
+                {" "}
+                <button
+                  type="submit"
+                  className=" bg-blue-600 px-7 py-2 rounded-md"
+                >
+                  Create
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+          {updateformopen && (
+          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-30 right-10 ">
+            <form onSubmit={updatehandlesubmit}>
+              <div onClick={()=>setupdateformopen(false)} className="cursor-pointer absolute right-4 top-4 bg-black text-white" > <X/></div>
               <div className="flex flex-wrap">
                 <div className="flex m-3 items-center">
                   <div className="me-3">Name:</div>
@@ -286,14 +484,13 @@ function Receptionlist() {
                           onClick={() => handleview(item.rID)}
                           className="text-blue-700 cursor-pointer"
                         >
-                          {" "}
-                          <Eye />{" "}
+                          <Eye />
                         </div>
                         <div className=" text-green-600 cursor-pointer">
-                      <div >    <SquarePen /></div>
+                      <div onClick={()=>handleupdate(item._id)}><SquarePen /></div>
                         </div>
                         <div className="text-red-700 cursor-pointer">
-                          {" "}
+                       
                          <div onClick={()=>handledelte(item._id)}><Trash2 /></div> 
                         </div>
                       </div>

@@ -75,10 +75,35 @@ function Home() {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await dispatch(registerDoctor(formData)).unwrap();
-      console.log("doctor new data:", response);
-      setcreate(false);
-      window.location.reload();
+      if(isEditing){
+        await dispatch(updateConsltantDataById({id:editingId ,updateData:formData})).unwrap();
+        setcreate(false)
+        window.location.reload()
+      }else{
+        await dispatch(registerDoctor(formData)).unwrap();
+        console.log("errrrrr");
+        
+        setFormData({
+          cIN: "",
+          name: "",
+          gender: "",
+          email: "",
+          dateOfBirth: "",
+          specialization: "",
+          specialty: "",
+          qualifications: "",
+          medicalLicenseNumber: "",
+          phoneNumber: "",
+          yearsOfExperience: "",
+          username: "",
+          password: "",
+        });
+        setcreate(!create),
+        setisEditing(false);
+        seteditingId(null)
+        dispatch(getConsltantData())
+      }
+      
     } catch (err) {
       console.log("error:", err);
     }
@@ -107,18 +132,34 @@ function Home() {
       Setselecteddata(consultantByid);
     }, [consultantByid]);
 
-  console.log(consultantByid);
+  // console.log(consultantByid);
   
   
 
   // update consultant data 
-  
+  const [isEditing,setisEditing]=useState(false);
+  const [editingId ,seteditingId]=useState(null)
   const handleUpdate=(item)=>{
-    setcreate(true);
-       if(item){
-        dispatch (updateConsltantDataById({id: item._id,updatedata:formData}))
-       }
-  }
+    
+   
+      setFormData({
+        cIN:item.cIN || "",
+        name :item.name || "",
+        gender :item.gender || "",
+        email :item.email || "",
+        dateOfBirth :item.dateOfBirth || "",
+        specialty :item.specialty || "",
+        qualifications :item.qualifications || "",
+        medicalLicenseNumber :item.medicalLicenseNumber || "",
+        phoneNumber:item.phoneNumber || "",
+        yearsOfExperience :item.yearsOfExperience || "",
+        username :item.username || "",
+        password : "",
+      })
+      setcreate(true)
+      setisEditing(true)
+      seteditingId(item._id || item.id);
+  };
 
 
 
@@ -160,7 +201,7 @@ function Home() {
                       name="cIN"
                       placeholder="CIN"
                       className="border w-52 px-3 py-1 rounded-md"
-                      value={editData.cIN || ''}
+                      value={formData.cIN || ''}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
@@ -375,10 +416,11 @@ function Home() {
                 <div className="block text-center my-4">
                   {" "}
                   <button
+                 
                     type="submit"
                     className=" bg-blue-600 px-7 py-2 rounded-md"
                   >
-                    Create
+                   {isEditing ? "Update":"create"}
                   </button>
                 </div>
               </form>
@@ -386,6 +428,7 @@ function Home() {
           )}
           {opendata && (
             <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-96 absolute px-28 py-7">
+
               {selectedItem.map((item)=>{
                        return( <div>
                          <h1 className="text-xl m-2"><b>CIN:</b>{item.cIN}</h1>
@@ -429,14 +472,14 @@ function Home() {
                     <td>{item.phoneNumber}</td>
                     <td>{item.gender}</td>
                     <td>
-                      <div className="flex">
-                        <div className="cursor-pointer" onClick={() => handleview(item.cIN)}>
+                      <div className="flex justify-around">
+                        <div className="cursor-pointer text-blue-700" onClick={() => handleview(item.cIN)}>
                           <Eye />
                         </div>
-                        <div className="cursor-pointer" onClick={() => handleUpdate(item)}>
+                        <div className="cursor-pointer text-green-600" onClick={() => handleUpdate(item)}>
                           <SquarePen />
                         </div>
-                        <div className="cursor-pointer" onClick={() => handleDelete(item._id)}>
+                        <div className="cursor-pointer text-red-700 " onClick={() => handleDelete(item._id)}>
                           <Trash2 />
                         </div>
                       </div>

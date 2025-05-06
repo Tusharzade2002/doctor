@@ -11,6 +11,7 @@ import {
   updateConsltantDataById,
   getReceptionById,
   deletereceptionById,
+  updatereceptionBYid
 } from "./RegistrationThunk";
 
 const initialState = {
@@ -170,6 +171,19 @@ const RegistrationSlice = createSlice({
         );
       })
       .addCase(deletereceptionById.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.error.message;
+      })
+
+
+
+      .addCase(updatereceptionBYid.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updatereceptionBYid.fulfilled, (state, action) => {
+         (state.status = "succeeded"), (state.user = action.payload);
+      })
+      .addCase(updatereceptionBYid.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.error.message;
       })

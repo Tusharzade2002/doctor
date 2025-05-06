@@ -32,7 +32,7 @@ export const loginUser = createAsyncThunk(
         const user = JSON.parse(localStorage.getItem('currentUser'));  
         const token = user?.token;
 
-      console.log("token for getdata:",token);
+      // console.log("token for getdata:",token);
       
         const response = await axios.get("http://localhost:8000/admin/getallconsultant", {
           headers: {
@@ -76,7 +76,7 @@ export const loginUser = createAsyncThunk(
                 Authorization:token
                }
         })
-        console.log(response.data.data);
+        // console.log(response.data.data);
         
         return response.data.data
       }catch(err){
@@ -191,3 +191,20 @@ try{
 
       }
     })
+
+    //updatee reception by id
+export const updatereceptionBYid=createAsyncThunk("auth/updatereceptionBYid",async({id,updateData},{rejectWithValue})=>{
+  const user=JSON.parse(localStorage.getItem("currentUser"));
+  const token =user?.token; 
+  try{
+    const response =await axios.patch(`http://localhost:8000/admin/updatereceptionist/${id}`,updateData,{
+      headers:{
+        Authorization:token
+      }
+    })
+    console.log(response.data.data);
+    return response.data.data;
+  }catch(err){
+    return thunkAPI.rejectWithValue(err.response?.data?.message || 'update data failed ');
+  }
+})
