@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./Component/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { X, SquarePen, Eye, Trash2 } from "lucide-react";
-import { getAllDepartment ,RegisterDepartment,DeleteDepartment} from "../Store/Registration/RegistrationThunk";
+import { getAllDepartment ,RegisterDepartment,DeleteDepartment,GetDepartmentByID} from "../Store/Registration/RegistrationThunk";
 function Department() {
   const [Isopen, setIsopen] = useState(false);
   const dispatch = useDispatch();
-  const { Department } = useSelector((state) => state.user);
+  const { Department ,DepartmentByid} = useSelector((state) => state.user);
   // get All Department
   useEffect(() => {
     dispatch(getAllDepartment());
@@ -39,6 +39,18 @@ console.log("error to post department");
            window.location.reload()
    }
 
+// GET deparment by id
+const  [viewdataopen,setviewdataopen]=useState(false)
+const [getdatabyrid,setgetdatabyrid]=useState([])
+   const handleview=(dID)=>{
+          setviewdataopen(!viewdataopen)    
+          dispatch(GetDepartmentByID(dID))  
+   };
+   useEffect(()=>{
+    setgetdatabyrid(DepartmentByid)
+   },[DepartmentByid])
+
+  //  console.log(DepartmentByid);
    
   return (
     <div className="flex">
@@ -121,6 +133,33 @@ console.log("error to post department");
             </div>
           </div>
         )}
+        {
+          viewdataopen && (
+            <div className="bg-white absolute top-28 right-56 shadow-lg px-10 py-3">
+               {
+                getdatabyrid.map((item)=>{
+              return(
+                <div>
+                 <h1 className="text-xl m-2">
+                      <b>DIN:</b>
+                      {item.dIN}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Name:</b>
+                      {item.name}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Desription:</b>
+                      {item.description}
+                    </h1>
+                  <div onClick={()=>setviewdataopen(false)} className="text-center m-5">   <button className="bg-blue-500 px-5 py-1">Cancel</button> </div>
+                </div>
+              )
+                })
+               }
+            </div>
+          )
+        }
         <table class="table table-bordered w-full">
           <thead>
             <tr>
@@ -142,7 +181,7 @@ console.log("error to post department");
                     <div className="flex justify-around">
                       <div
                         className="cursor-pointer text-blue-700"
-                        // onClick={() => handleview(item.cIN)}
+                        onClick={() => handleview(item.dIN)}
                       >
                         <Eye />
                       </div>

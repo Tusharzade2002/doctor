@@ -15,6 +15,7 @@ import {
   getAllDepartment,
   RegisterDepartment,
   DeleteDepartment,
+  GetDepartmentByID
 } from "./RegistrationThunk";
 
 const initialState = {
@@ -22,6 +23,7 @@ const initialState = {
   data: null,
   consultantByid: [],
   ReceptionByid: [],
+  DepartmentByid:[],
   consultant: [],
   Patient: [],
   Reception: [],
@@ -209,7 +211,7 @@ const RegistrationSlice = createSlice({
       .addCase(RegisterDepartment.rejected, (state, action) => {
         (state.status = "failed"), (state.error = action.error.message);
       })
-
+//Delete Department
       .addCase(DeleteDepartment.pending, (state) => {
         state.status = "loading";
       })
@@ -219,6 +221,17 @@ const RegistrationSlice = createSlice({
         );      })
       .addCase(DeleteDepartment.rejected, (state, action) => {
         (state.status = "failed"), (state.error = action.error.message);
+      })
+      // Get department BY ID
+      .addCase(GetDepartmentByID.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(GetDepartmentByID.fulfilled, (state, action) => {
+        (state.status = "succeeded"), (state.DepartmentByid = action.payload);
+      })
+      .addCase(GetDepartmentByID.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.error.message;
       })
   },
 });

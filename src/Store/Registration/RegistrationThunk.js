@@ -358,3 +358,21 @@ export const DeleteDepartment = createAsyncThunk("auth/DeleteDepartment",async(i
     );
    }
 })
+//Get Department By rid
+export const GetDepartmentByID = createAsyncThunk("auth/GetDepartmentByID",async(dIN,{thunkAPI})=>{
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const token = user?.token;
+   try{
+         const response = await axios.get(`http://localhost:8000/admin/departmentbyid/${dIN}`,{
+          headers:{
+            Authorization:token
+          }
+         })
+        //  console.log(response.data.data);
+         return response.data.data
+   }catch(err){
+    return thunkAPI.rejectWithValue(
+      err.response?.data?.message || " failed to get the data"
+    );
+   }
+  })
