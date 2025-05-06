@@ -6,9 +6,9 @@ import {
   registerReception,
   getReceptionById,
   deletereceptionById,
-  updatereceptionBYid
+  updatereceptionBYid,
 } from "../Store/Registration/RegistrationThunk";
-import { Eye, SquarePen, Trash2 , X} from "lucide-react";
+import { Eye, SquarePen, Trash2, X } from "lucide-react";
 
 function Receptionlist() {
   const dispatch = useDispatch();
@@ -43,13 +43,32 @@ function Receptionlist() {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await dispatch(registerReception(formdata)).unwrap();
-      console.log(response);
+      if (isEditing) {
+        await dispatch(
+          updatereceptionBYid({ id: editingId, updateData: formdata })
+        ).unwrap();
+        setcreate(false);
+        window.location.reload();
+      } else {
+        await dispatch(registerReception(formdata)).unwrap();
+      }
+      setformdata({
+        rID: "",
+        name: "",
+        username: "",
+        email: "",
+        phoneNumber: "",
+        gender: "",
+        dateOfBirth: "",
+        password: "", // You may not want to prefill password
+        _id: "",
+      });
       setcreate(false);
-      window.location.reload();
+      setisEditing(false);
+      seteditingId(null);
+      dispatch(getReceptionById());
     } catch (err) {
-      console.log("error:", err);
-      setcreate(false);
+      console.log("errr");
     }
   };
 
@@ -64,53 +83,31 @@ function Receptionlist() {
     setReceptionid(ReceptionByid);
   }, [ReceptionByid]);
 
-  
-
   //delete reception data by id
 
-  const handledelte=(id)=>{
-          dispatch(deletereceptionById(id))
-          window.location.reload();
-  }
- // update reception data by id 
- const [updateformopen,setupdateformopen]=useState(false)
- const [isEditMode, setIsEditMode] = useState(false);
-  const handleupdate=(id)=>{
-     setupdateformopen(!updateformopen);
-     const selectedReception = Reception.find((recep)=> recep.id === id);
-     if (selectedReception) {
-      setformdata({
-        rID: selectedReception.rID || "",
-        name: selectedReception.name || "",
-        username: selectedReception.username || "",
-        email: selectedReception.email || "",
-        phoneNumber: selectedReception.phoneNumber || "",
-        gender: selectedReception.gender || "",
-        dateOfBirth: selectedReception.dateOfBirth || "",
-        password: "", // You may not want to prefill password
-        _id: selectedReception._id,
-      });
-     }
-  }
-
-  const updatehandlesubmit=async(e)=>{
-    e.preventDefault();
-    try{
-      if(formdata._id){
-         await dispatch(updatereceptionBYid({formdata})).unwrap()    
-      }else{
-        await dispatch(registerReception(formdata)).unwrap()
-      }
-      setupdateformopen(false);
-      setIsEditMode(false)
-      window.location.reload()
-    }catch(err){
- console.log("error:",err);
- setupdateformopen(false)
- setIsEditMode(false)
-
-    }
-  }
+  const handledelte = (id) => {
+    dispatch(deletereceptionById(id));
+    window.location.reload();
+  };
+  // update reception data by id
+  const [isEditing, setisEditing] = useState(false);
+  const [editingId, seteditingId] = useState(null);
+  const handleupdate = (item) => {
+    setformdata({
+      rID: item.rID || "",
+      name: item.name || "",
+      username: item.username || "",
+      email: item.email || "",
+      phoneNumber: item.phoneNumber || "",
+      gender: item.gender || "",
+      dateOfBirth: item.dateOfBirth || "",
+      password: "", // You may not want to prefill password
+      _id: item._id,
+    });
+    setcreate(true);
+    setisEditing(true);
+    seteditingId(item._id || item.id);
+  };
 
   return (
     <div className="flex">
@@ -132,17 +129,31 @@ function Receptionlist() {
           </button>
         </div>
         {create && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-30 right-10 ">
-            <form onSubmit={handlesubmit}>
-              <div onClick={()=>setcreate(false)} className="cursor-pointer absolute right-4 top-4 bg-black text-white" > <X/></div>
-              <div className="flex flex-wrap">
-                <div className="flex m-3 items-center">
-                  <div className="me-3">Name:</div>
+          <div className="bg-slate-100 shadow-2xl rounded-md ms-10  absolute top-24 right-32 ">
+            <form
+              onSubmit={handlesubmit}
+              className="relative bg-white p-6 rounded-lg shadow-md w-full max-w-4xl mx-auto"
+            >
+              {/* Close Button */}
+              <div
+                onClick={() => setcreate(false)}
+                className="cursor-pointer absolute right-4 top-4 bg-black text-white p-2 rounded-full"
+              >
+                <X />
+              </div>
+
+              {/* Form Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                {/* RID */}
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    RID
+                  </label>
                   <input
                     type="text"
                     name="rID"
                     placeholder="RID"
-                    className="border w-52 px-3 py-1 rounded-md"
+                    className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formdata.rID}
                     onChange={(e) =>
                       setformdata({
@@ -152,14 +163,16 @@ function Receptionlist() {
                     }
                   />
                 </div>
-
-                <div className="flex m-3 items-center">
-                  <div className="me-3">Name:</div>
+                {/* Name */}
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Name
+                  </label>
                   <input
                     type="text"
                     name="name"
                     placeholder="Name"
-                    className="border w-52 px-3 py-1 rounded-md"
+                    className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formdata.name}
                     onChange={(e) =>
                       setformdata({
@@ -170,13 +183,16 @@ function Receptionlist() {
                   />
                 </div>
 
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">Username:</div>
+                {/* Username */}
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Username
+                  </label>
                   <input
                     type="text"
                     name="username"
-                    placeholder="username"
-                    className="border w-52 px-3 py-1 rounded-md"
+                    placeholder="Username"
+                    className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formdata.username}
                     onChange={(e) =>
                       setformdata({
@@ -187,13 +203,17 @@ function Receptionlist() {
                   />
                 </div>
 
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">Gender:</div>
+                {/* Gender */}
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Gender
+                  </label>
                   <input
                     type="text"
                     name="gender"
                     placeholder="Gender"
-                    className="border w-52 px-3 py-1 rounded-md"
+                    list="genders"
+                    className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formdata.gender}
                     onChange={(e) =>
                       setformdata({
@@ -201,21 +221,23 @@ function Receptionlist() {
                         [e.target.name]: e.target.value,
                       })
                     }
-                    list="genders"
                   />
                   <datalist id="genders">
-                    <option value="Male"></option>
-                    <option value="Female"></option>
-                    <option value="Other"></option>
+                    <option value="Male" />
+                    <option value="Female" />
+                    <option value="Other" />
                   </datalist>
                 </div>
-                <div className="flex m-3 mx-4 items-center">
-                  <div className="me-3 text-lg">DOB:</div>
+
+                {/* DOB */}
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Date of Birth
+                  </label>
                   <input
                     type="date"
                     name="dateOfBirth"
-                    placeholder="DOB"
-                    className="border w-52 px-3 py-1 rounded-md"
+                    className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formdata.dateOfBirth}
                     onChange={(e) =>
                       setformdata({
@@ -225,13 +247,17 @@ function Receptionlist() {
                     }
                   />
                 </div>
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">Phone Number:</div>
+
+                {/* Phone Number */}
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Phone Number
+                  </label>
                   <input
                     type="number"
                     name="phoneNumber"
-                    placeholder="phoneNumber"
-                    className="border w-52 px-3 py-1 rounded-md"
+                    placeholder="Phone Number"
+                    className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formdata.phoneNumber}
                     onChange={(e) =>
                       setformdata({
@@ -241,13 +267,17 @@ function Receptionlist() {
                     }
                   />
                 </div>
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">email:</div>
+
+                {/* Email */}
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Email
+                  </label>
                   <input
                     type="email"
                     name="email"
-                    placeholder="email"
-                    className="border w-52 px-3 py-1 rounded-md"
+                    placeholder="Email"
+                    className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formdata.email}
                     onChange={(e) =>
                       setformdata({
@@ -258,13 +288,16 @@ function Receptionlist() {
                   />
                 </div>
 
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">Password:</div>
+                {/* Password */}
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Password
+                  </label>
                   <input
                     type="password"
                     name="password"
                     placeholder="Password"
-                    className="border w-52 px-3 py-1 rounded-md"
+                    className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formdata.password}
                     onChange={(e) =>
                       setformdata({
@@ -275,11 +308,12 @@ function Receptionlist() {
                   />
                 </div>
               </div>
-              <div className="block text-center my-4">
-                {" "}
+
+              {/* Submit Button */}
+              <div className="mt-6 text-center">
                 <button
                   type="submit"
-                  className=" bg-blue-600 px-7 py-2 rounded-md"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-2 rounded-md shadow-md transition-all"
                 >
                   Create
                 </button>
@@ -287,8 +321,8 @@ function Receptionlist() {
             </form>
           </div>
         )}
-          {updateformopen && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-30 right-10 ">
+        {/* {updateformopen && (
+          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-10 right-44 ">
             <form onSubmit={updatehandlesubmit}>
               <div onClick={()=>setupdateformopen(false)} className="cursor-pointer absolute right-4 top-4 bg-black text-white" > <X/></div>
               <div className="flex flex-wrap">
@@ -442,7 +476,7 @@ function Receptionlist() {
               </div>
             </form>
           </div>
-        )}
+        )} */}
         {Isopen && (
           <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[450px] absolute top-30 right-96 p-10 mx-12 ">
             {Object.entries(Receptionid).map(([key, value]) => (
@@ -450,7 +484,15 @@ function Receptionlist() {
                 <strong>{key}:</strong> {value}
               </p>
             ))}
-         <div className="text-center ">   <button className="bg-blue-700 px-7 rounded-md py-1" onClick={()=>setIsopen(false)}>Cancel</button> </div>
+            <div className="text-center ">
+              {" "}
+              <button
+                className="bg-blue-700 px-7 rounded-md py-1"
+                onClick={() => setIsopen(false)}
+              >
+                Cancel
+              </button>{" "}
+            </div>
           </div>
         )}
         <div>
@@ -487,11 +529,14 @@ function Receptionlist() {
                           <Eye />
                         </div>
                         <div className=" text-green-600 cursor-pointer">
-                      <div onClick={()=>handleupdate(item._id)}><SquarePen /></div>
+                          <div onClick={() => handleupdate(item)}>
+                            <SquarePen />
+                          </div>
                         </div>
                         <div className="text-red-700 cursor-pointer">
-                       
-                         <div onClick={()=>handledelte(item._id)}><Trash2 /></div> 
+                          <div onClick={() => handledelte(item._id)}>
+                            <Trash2 />
+                          </div>
                         </div>
                       </div>
                     </td>

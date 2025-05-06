@@ -5,7 +5,7 @@ import { getConsltantData } from "../Store/Registration/RegistrationThunk";
 import { registerDoctor } from "../Store/Doctor/authThunk";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Component/Sidebar";
-import { Eye, SquarePen, Trash2 ,X} from "lucide-react";
+import { Eye, SquarePen, Trash2, X } from "lucide-react";
 import {
   deleteconsultantById,
   getConsltantDataById,
@@ -14,13 +14,15 @@ import {
 
 function Home() {
   const [username, setUsername] = useState("");
-   //get consultant data by id
-   const {consultant, status, error , consultantByid, data} = useSelector((state) => state.user);  
-   const [opendata, setopendata] = useState(false);
-  const [selectedItem ,Setselecteddata] =useState([])
-  const [editData, setEditData] = useState([])
-  const [selectedid, setSelectedId] = useState(null)
-  const[consultantDatabyId, setconsultantdataById] = useState([])
+  //get consultant data by id
+  const { consultant, status, error, consultantByid, data } = useSelector(
+    (state) => state.user
+  );
+  const [opendata, setopendata] = useState(false);
+  const [selectedItem, Setselecteddata] = useState([]);
+  const [editData, setEditData] = useState([]);
+  const [selectedid, setSelectedId] = useState(null);
+  const [consultantDatabyId, setconsultantdataById] = useState([]);
   localStorage.getItem("currentUser");
   const user = localStorage.getItem("currentUser");
   // console.log("user", user);
@@ -36,16 +38,15 @@ function Home() {
   const dispatch = useDispatch();
 
   //get consultant Data
-  
+
   const [consultantdata, setconsultantdata] = useState([]);
 
   useEffect(() => {
     setconsultantdata(consultant);
-    if(consultantByid){
-      setconsultantdataById(consultantByid)
+    if (consultantByid) {
+      setconsultantdataById(consultantByid);
     }
   }, [consultant, consultantByid]);
-
 
   useEffect(() => {
     dispatch(getConsltantData());
@@ -75,14 +76,16 @@ function Home() {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      if(isEditing){
-        await dispatch(updateConsltantDataById({id:editingId ,updateData:formData})).unwrap();
-        setcreate(false)
-        window.location.reload()
-      }else{
+      if (isEditing) {
+        await dispatch(
+          updateConsltantDataById({ id: editingId, updateData: formData })
+        ).unwrap();
+        setcreate(false);
+        window.location.reload();
+      } else {
         await dispatch(registerDoctor(formData)).unwrap();
         console.log("errrrrr");
-        
+
         setFormData({
           cIN: "",
           name: "",
@@ -98,12 +101,10 @@ function Home() {
           username: "",
           password: "",
         });
-        setcreate(!create),
-        setisEditing(false);
-        seteditingId(null)
-        dispatch(getConsltantData())
+        setcreate(!create), setisEditing(false);
+        seteditingId(null);
+        dispatch(getConsltantData());
       }
-      
     } catch (err) {
       console.log("error:", err);
     }
@@ -118,50 +119,45 @@ function Home() {
     dispatch(deleteconsultantById(id));
     window.location.reload();
   };
- 
 
-
-// view consultant data by ID
+  // view consultant data by ID
 
   const handleview = (cIN) => {
     setopendata(!opendata);
     dispatch(getConsltantDataById(cIN));
-
-  }
-   useEffect(() => {
-      Setselecteddata(consultantByid);
-    }, [consultantByid]);
+  };
+  useEffect(() => {
+    Setselecteddata(consultantByid);
+  }, [consultantByid]);
 
   // console.log(consultantByid);
-  
-  
 
-  // update consultant data 
-  const [isEditing,setisEditing]=useState(false);
-  const [editingId ,seteditingId]=useState(null)
-  const handleUpdate=(item)=>{
-    
-   
-      setFormData({
-        cIN:item.cIN || "",
-        name :item.name || "",
-        gender :item.gender || "",
-        email :item.email || "",
-        dateOfBirth :item.dateOfBirth || "",
-        specialty :item.specialty || "",
-        qualifications :item.qualifications || "",
-        medicalLicenseNumber :item.medicalLicenseNumber || "",
-        phoneNumber:item.phoneNumber || "",
-        yearsOfExperience :item.yearsOfExperience || "",
-        username :item.username || "",
-        password : "",
-      })
-      setcreate(true)
-      setisEditing(true)
-      seteditingId(item._id || item.id);
+  // update consultant data
+  const [isEditing, setisEditing] = useState(false);
+  const [editingId, seteditingId] = useState(null);
+  const handleUpdate = (item) => {
+    setFormData({
+      cIN: item.cIN || "",
+      name: item.name || "",
+      gender: item.gender || "",
+      email: item.email || "",
+      dateOfBirth: item.dateOfBirth || "",
+      specialty: item.specialty || "",
+      qualifications: item.qualifications || "",
+      medicalLicenseNumber: item.medicalLicenseNumber || "",
+      phoneNumber: item.phoneNumber || "",
+      yearsOfExperience: item.yearsOfExperience || "",
+      username: item.username || "",
+      password: "",
+    });
+    setcreate(true);
+    setisEditing(true);
+    seteditingId(item._id || item.id);
   };
 
-
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="flex relative">
@@ -188,239 +184,226 @@ function Home() {
             </button>
           </div>
           {create && (
-            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 absolute">
-              <div  className="absolute right-8 top-6 bg-black text-white cursor-pointer" 
-               onClick={Createconslutent}
-              ><X/></div>
-              <form onSubmit={handlesubmit}>
-                <div className="flex flex-wrap">
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">CIN:</div>
+            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-[200px] absolute">
+              <div
+                 className="cursor-pointer absolute right-4 top-4 bg-black text-white p-2 rounded-full"
+                onClick={Createconslutent}
+              >
+                <X />
+              </div>
+              <form
+                onSubmit={handlesubmit}
+                className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* CIN */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      CIN:
+                    </label>
                     <input
                       type="number"
                       name="cIN"
                       placeholder="CIN"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.cIN || ''}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.cIN || ""}
+                      onChange={handleChange}
                     />
                   </div>
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">Username:</div>
+
+                  {/* Username */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Username:
+                    </label>
                     <input
                       type="text"
                       name="username"
-                      placeholder="username"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.username }
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      placeholder="Username"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.username || ""}
+                      onChange={handleChange}
                     />
                   </div>
-                  <div className="flex m-5 items-center">
-                    <div className="me-3">Name:</div>
+
+                  {/* Name */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Name:
+                    </label>
                     <input
                       type="text"
                       name="name"
                       placeholder="Name"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.name || ""}
+                      onChange={handleChange}
                     />
                   </div>
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">Gender:</div>
+
+                  {/* Gender */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Gender:
+                    </label>
                     <input
                       type="text"
                       name="gender"
                       placeholder="Gender"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.gender}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
                       list="genders"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.gender || ""}
+                      onChange={handleChange}
                     />
                     <datalist id="genders">
-                      <option value="Male"></option>
-                      <option value="Female"></option>
-                      <option value="Other"></option>
+                      <option value="Male" />
+                      <option value="Female" />
+                      <option value="Other" />
                     </datalist>
                   </div>
-                  <div className="flex m-5 mx-4 items-center">
-                    <div className="me-3 text-lg">DOB:</div>
+
+                  {/* DOB */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Date of Birth:
+                    </label>
                     <input
                       type="date"
                       name="dateOfBirth"
-                      placeholder="DOB"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.dateOfBirth}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.dateOfBirth || ""}
+                      onChange={handleChange}
                     />
                   </div>
-                  <div className="flex mx-4 m-5 items-center">
-                    <div className="me-3 text-lg">Specialty:</div>
+
+                  {/* Specialty */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Specialty:
+                    </label>
                     <input
                       type="text"
-                      placeholder="Specialty"
                       name="specialty"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.specialty}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      placeholder="Specialty"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.specialty || ""}
+                      onChange={handleChange}
                     />
                   </div>
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">Medical License Number:</div>
+
+                  {/* License Number */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Medical License Number:
+                    </label>
                     <input
                       type="text"
                       name="medicalLicenseNumber"
-                      placeholder="Medical License Number"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.medicalLicenseNumber}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      placeholder="License Number"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.medicalLicenseNumber || ""}
+                      onChange={handleChange}
                     />
                   </div>
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">years Of Experience:</div>
+
+                  {/* Experience */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Years of Experience:
+                    </label>
                     <input
                       type="text"
                       name="yearsOfExperience"
-                      placeholder="years Of Experience"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.yearsOfExperience}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      placeholder="Years of Experience"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.yearsOfExperience || ""}
+                      onChange={handleChange}
                     />
                   </div>
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">Phone Number:</div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Phone Number:
+                    </label>
                     <input
                       type="number"
                       name="phoneNumber"
                       placeholder="Phone Number"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.phoneNumber}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.phoneNumber || ""}
+                      onChange={handleChange}
                     />
                   </div>
 
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">Password:</div>
+                  {/* Password */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Password:
+                    </label>
                     <input
                       type="password"
                       name="password"
                       placeholder="Password"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.password}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.password || ""}
+                      onChange={handleChange}
                     />
                   </div>
 
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">email:</div>
+                  {/* Email */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Email:
+                    </label>
                     <input
                       type="email"
                       name="email"
-                      placeholder="email"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      placeholder="Email"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.email || ""}
+                      onChange={handleChange}
                     />
                   </div>
 
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">Specialization:</div>
+                  {/* Specialization */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Specialization:
+                    </label>
                     <input
                       type="text"
-                      placeholder="specialization"
                       name="specialization"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.specialization}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      placeholder="Specialization"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.specialization || ""}
+                      onChange={handleChange}
                     />
                   </div>
 
-                  <div className="flex m-5 items-center">
-                    <div className="me-3 text-lg">Qualifications:</div>
+                  {/* Qualifications */}
+                  <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                      Qualifications:
+                    </label>
                     <input
                       type="text"
                       name="qualifications"
-                      placeholder="qualifications"
-                      className="border w-52 px-3 py-1 rounded-md"
-                      value={formData.qualifications}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
+                      placeholder="Qualifications"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.qualifications || ""}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
-                <div className="block text-center my-4">
-                  {" "}
+
+                {/* Submit Button */}
+                <div className="text-center mt-8">
                   <button
-                 
                     type="submit"
-                    className=" bg-blue-600 px-7 py-2 rounded-md"
+                    className="bg-blue-600 text-white px-8 py-1 rounded-md hover:bg-blue-700 transition"
                   >
-                   {isEditing ? "Update":"create"}
+                    {isEditing ? "Update" : "Create"}
                   </button>
                 </div>
               </form>
@@ -428,24 +411,65 @@ function Home() {
           )}
           {opendata && (
             <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-96 absolute px-28 py-7">
-
-              {selectedItem.map((item)=>{
-                       return( <div>
-                         <h1 className="text-xl m-2"><b>CIN:</b>{item.cIN}</h1>
-                         <h1 className="text-xl m-2"><b>Name:</b>{item.name}</h1>
-                         <h1 className="text-xl m-2"><b>Username:</b>{item.username}</h1>
-                         <h1 className="text-xl m-2"><b>Gender:</b>{item.gender}</h1>
-                         <h1 className="text-xl m-2"><b>Date Of Birth:</b>{item.dateOfBirth}</h1>
-                         <h1 className="text-xl m-2"><b>Phone Number:</b>{item.phoneNumber}</h1>
-                         <h1 className="text-xl m-2"><b>Qualifications:</b>{item.qualifications}</h1>
-                         <h1 className="text-xl m-2"><b>Specialty:</b>{item.specialty}</h1>
-                         <h1 className="text-xl m-2"><b>medicalLicenseNumber:</b>{item.medicalLicenseNumber}</h1>
-                         <h1 className="text-xl m-2"><b>medicalLicenseNumber:</b>{item.medicalLicenseNumber}</h1>
-                         <h1 className="text-xl m-2"><b>Years Of Experience:</b>{item.yearsOfExperience}</h1>
-                         <div className="text-center"> <button className= " mt-5 bg-blue-700 text-xl text-white rounded-md  px-3"  onClick={() => setopendata(!opendata)}>Cancel</button></div>
-                        </div>)
+              {selectedItem.map((item) => {
+                return (
+                  <div>
+                    <h1 className="text-xl m-2">
+                      <b>CIN:</b>
+                      {item.cIN}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Name:</b>
+                      {item.name}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Username:</b>
+                      {item.username}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Gender:</b>
+                      {item.gender}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Date Of Birth:</b>
+                      {item.dateOfBirth}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Phone Number:</b>
+                      {item.phoneNumber}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Qualifications:</b>
+                      {item.qualifications}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Specialty:</b>
+                      {item.specialty}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>medicalLicenseNumber:</b>
+                      {item.medicalLicenseNumber}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>medicalLicenseNumber:</b>
+                      {item.medicalLicenseNumber}
+                    </h1>
+                    <h1 className="text-xl m-2">
+                      <b>Years Of Experience:</b>
+                      {item.yearsOfExperience}
+                    </h1>
+                    <div className="text-center">
+                      {" "}
+                      <button
+                        className=" mt-5 bg-blue-700 text-xl text-white rounded-md  px-3"
+                        onClick={() => setopendata(!opendata)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                );
               })}
-              
             </div>
           )}
 
@@ -473,13 +497,22 @@ function Home() {
                     <td>{item.gender}</td>
                     <td>
                       <div className="flex justify-around">
-                        <div className="cursor-pointer text-blue-700" onClick={() => handleview(item.cIN)}>
+                        <div
+                          className="cursor-pointer text-blue-700"
+                          onClick={() => handleview(item.cIN)}
+                        >
                           <Eye />
                         </div>
-                        <div className="cursor-pointer text-green-600" onClick={() => handleUpdate(item)}>
+                        <div
+                          className="cursor-pointer text-green-600"
+                          onClick={() => handleUpdate(item)}
+                        >
                           <SquarePen />
                         </div>
-                        <div className="cursor-pointer text-red-700 " onClick={() => handleDelete(item._id)}>
+                        <div
+                          className="cursor-pointer text-red-700 "
+                          onClick={() => handleDelete(item._id)}
+                        >
                           <Trash2 />
                         </div>
                       </div>
