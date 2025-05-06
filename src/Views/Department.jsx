@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./Component/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { X, SquarePen, Eye, Trash2 } from "lucide-react";
-import { getAllDepartment ,RegisterDepartment} from "../Store/Registration/RegistrationThunk";
+import { getAllDepartment ,RegisterDepartment,DeleteDepartment} from "../Store/Registration/RegistrationThunk";
 function Department() {
   const [Isopen, setIsopen] = useState(false);
   const dispatch = useDispatch();
@@ -33,6 +33,13 @@ console.log("error to post department");
   }
   };
 
+  // delete Department
+   const handleDelete=(id)=>{
+           dispatch(DeleteDepartment(id));
+           window.location.reload()
+   }
+
+   
   return (
     <div className="flex">
       <Sidebar />
@@ -147,7 +154,7 @@ console.log("error to post department");
                       </div>
                       <div
                         className="cursor-pointer text-red-700 "
-                        // onClick={() => handleDelete(item._id)}
+                        onClick={() => handleDelete(item._id)}
                       >
                         <Trash2 />
                       </div>

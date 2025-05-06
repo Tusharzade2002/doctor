@@ -340,3 +340,21 @@ export const RegisterDepartment = createAsyncThunk(
     }
   }
 );
+
+//Delete Department By Id
+export const DeleteDepartment = createAsyncThunk("auth/DeleteDepartment",async(id,{rejectWithValue})=>{
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const token = user?.token;
+   try{
+         const response = await axios.delete(`http://localhost:8000/admin/deletedepartment/${id}`,{
+          headers:{
+            Authorization:token
+          }
+         })
+         return id
+   }catch(err){
+    return thunkAPI.rejectWithValue(
+      err.response?.data?.message || "deletation failed"
+    );
+   }
+})
