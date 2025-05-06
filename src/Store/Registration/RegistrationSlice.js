@@ -11,17 +11,20 @@ import {
   updateConsltantDataById,
   getReceptionById,
   deletereceptionById,
-  updatereceptionBYid
+  updatereceptionBYid,
+  getAllDepartment,
+  RegisterDepartment,
 } from "./RegistrationThunk";
 
 const initialState = {
   user: null,
   data: null,
   consultantByid: [],
-  ReceptionByid:[],
+  ReceptionByid: [],
   consultant: [],
   Patient: [],
   Reception: [],
+  Department: [],
   loading: false,
   error: null,
 };
@@ -175,18 +178,36 @@ const RegistrationSlice = createSlice({
         state.error = action.error.message;
       })
 
-
-
       .addCase(updatereceptionBYid.pending, (state) => {
         state.status = "loading";
       })
       .addCase(updatereceptionBYid.fulfilled, (state, action) => {
-         (state.status = "succeeded"), (state.user = action.payload);
+        (state.status = "succeeded"), (state.user = action.payload);
       })
       .addCase(updatereceptionBYid.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.error.message;
       })
+//getALLDepartment
+      .addCase(getAllDepartment.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllDepartment.fulfilled, (state, action) => {
+        (state.status = "succeeded"), (state.Department = action.payload);
+      })
+      .addCase(getAllDepartment.rejected, (state, action) => {
+        (state.status = "failed"), (state.error = action.error.message);
+      })
+//registerDepartment
+      .addCase(RegisterDepartment.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(RegisterDepartment.fulfilled, (state, action) => {
+        (state.status = "succeeded"), (state.user = action.payload);
+      })
+      .addCase(RegisterDepartment.rejected, (state, action) => {
+        (state.status = "failed"), (state.error = action.error.message);
+      });
   },
 });
 export const { setFilter } = RegistrationSlice.actions;
