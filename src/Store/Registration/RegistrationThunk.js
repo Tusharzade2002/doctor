@@ -324,7 +324,8 @@ export const RegisterDepartment = createAsyncThunk(
     const token = user?.token;
     try {
       const response = await axios.post(
-        "http://localhost:8000/admin/createdepartment",formdata,
+        "http://localhost:8000/admin/createdepartment",
+        formdata,
         {
           headers: {
             Authorization: token,
@@ -332,7 +333,7 @@ export const RegisterDepartment = createAsyncThunk(
         }
       );
       console.log(response.data.data);
-      return response.data.data
+      return response.data.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "update data failed "
@@ -342,37 +343,75 @@ export const RegisterDepartment = createAsyncThunk(
 );
 
 //Delete Department By Id
-export const DeleteDepartment = createAsyncThunk("auth/DeleteDepartment",async(id,{rejectWithValue})=>{
-  const user = JSON.parse(localStorage.getItem("currentUser"));
-  const token = user?.token;
-   try{
-         const response = await axios.delete(`http://localhost:8000/admin/deletedepartment/${id}`,{
-          headers:{
-            Authorization:token
-          }
-         })
-         return id
-   }catch(err){
-    return thunkAPI.rejectWithValue(
-      err.response?.data?.message || "deletation failed"
-    );
-   }
-})
-//Get Department By rid
-export const GetDepartmentByID = createAsyncThunk("auth/GetDepartmentByID",async(dIN,{thunkAPI})=>{
-  const user = JSON.parse(localStorage.getItem("currentUser"));
-  const token = user?.token;
-   try{
-         const response = await axios.get(`http://localhost:8000/admin/departmentbyid/${dIN}`,{
-          headers:{
-            Authorization:token
-          }
-         })
-        //  console.log(response.data.data);
-         return response.data.data
-   }catch(err){
-    return thunkAPI.rejectWithValue(
-      err.response?.data?.message || " failed to get the data"
-    );
-   }
-  })
+export const DeleteDepartment = createAsyncThunk(
+  "auth/DeleteDepartment",
+  async (id, { rejectWithValue }) => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const token = user?.token;
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/admin/deletedepartment/${id}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      return id;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "deletation failed"
+      );
+    }
+  }
+);
+//Get Department By din
+export const GetDepartmentByID = createAsyncThunk(
+  "auth/GetDepartmentByID",
+  async (dIN, thunkAPI) => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const token = user?.token;
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/admin/departmentbyid/${dIN}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      //  console.log(response.data.data);
+      return response.data.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || " failed to get the data"
+      );
+    }
+  }
+);
+
+
+export const updatedepartmentBYid = createAsyncThunk(
+  "auth/updatedepartmentBYid",
+  async ({ id, updateData }, { rejectWithValue }) => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const token = user?.token;
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/admin/updatedepartment/${id}`,
+        updateData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(response.data.data);
+      return response.data.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "update data failed "
+      );
+    }
+  }
+);

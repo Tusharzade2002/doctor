@@ -6,6 +6,7 @@ function Patients() {
   const dispatch =useDispatch();
   const {Patient}=useSelector((state)=>state.user);
   const [PatientsData,SetPatientsData]=useState([]);
+  const [isopen,setisopen]=useState()
   useEffect(()=>{
     SetPatientsData(Patient)
   },[Patient])
@@ -24,7 +25,7 @@ console.log(PatientsData);
       <h1>localhost:8000/admin/getallpatient</h1>
     
     </div>
-   
+   <div className='text-end me-8 mb-2'><button className='bg-blue-600 px-10 text-xl py-1 rounded-md'>Create +</button></div>
     <table class="table table-bordered w-full">
             <thead>
               <tr>

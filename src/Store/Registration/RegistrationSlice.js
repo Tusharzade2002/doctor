@@ -15,7 +15,8 @@ import {
   getAllDepartment,
   RegisterDepartment,
   DeleteDepartment,
-  GetDepartmentByID
+  GetDepartmentByID,
+  updatedepartmentBYid
 } from "./RegistrationThunk";
 
 const initialState = {
@@ -230,6 +231,18 @@ const RegistrationSlice = createSlice({
         (state.status = "succeeded"), (state.DepartmentByid = action.payload);
       })
       .addCase(GetDepartmentByID.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.error.message;
+      })
+
+       // update Department BY ID
+       .addCase(updatedepartmentBYid.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updatedepartmentBYid.fulfilled, (state, action) => {
+        (state.status = "succeeded"), (state.DepartmentByid = action.payload);
+      })
+      .addCase(updatedepartmentBYid.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.error.message;
       })

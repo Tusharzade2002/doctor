@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./Component/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { X, SquarePen, Eye, Trash2 } from "lucide-react";
-import { getAllDepartment ,RegisterDepartment,DeleteDepartment,GetDepartmentByID} from "../Store/Registration/RegistrationThunk";
+import { getAllDepartment ,RegisterDepartment,DeleteDepartment,GetDepartmentByID, updatedepartmentBYid} from "../Store/Registration/RegistrationThunk";
 function Department() {
   const [Isopen, setIsopen] = useState(false);
+  const [isEditing,setisEditing]=useState(false);
+  const [editingId,seteditingId]=useState(null);
   const dispatch = useDispatch();
   const { Department ,DepartmentByid} = useSelector((state) => state.user);
   // get All Department
@@ -23,13 +25,28 @@ function Department() {
 
   const handlesubmit = async(e) => {
     e.preventDefault()
-    setIsopen(false);
+   
   try{
-    await dispatch(RegisterDepartment(formdata)).unwrap()
-    window.location.reload()
+    if(isEditing){
+
+    await dispatch(updatedepartmentBYid({id:editingId,updateData :formdata})).unwrap()
+    setIsopen(false)
+    window.location.reload();
+    }else {
+      await dispatch(RegisterDepartment(formdata)).unwrap()
+         setformdata({
+          dIN:"",
+          name:"",
+          description:""
+         });
+         setIsopen(!viewdataopen),setisEditing(false);
+         seteditingId(null);
+         dispatch(getAllDepartment())
+    }
+    
 
   }catch(err){
-console.log("error to post department");
+       console.log("error to post department");
   }
   };
 
@@ -42,9 +59,9 @@ console.log("error to post department");
 // GET deparment by id
 const  [viewdataopen,setviewdataopen]=useState(false)
 const [getdatabyrid,setgetdatabyrid]=useState([])
-   const handleview=(dID)=>{
+   const handleview=(dIN)=>{
           setviewdataopen(!viewdataopen)    
-          dispatch(GetDepartmentByID(dID))  
+          dispatch(GetDepartmentByID(dIN))  
    };
    useEffect(()=>{
     setgetdatabyrid(DepartmentByid)
@@ -52,6 +69,19 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
 
   //  console.log(DepartmentByid);
    
+  //update Department byId
+  
+     const handleUpdate=(item)=>{
+         setformdata({
+          dIN:item.dIN || "",
+          name:item.name || "",
+          description:item.description || ""
+         })
+         setIsopen(true)
+         setisEditing(true)
+         seteditingId(item._id)
+        //  seteditingId(item._id == item._id)
+     }
   return (
     <div className="flex">
       <Sidebar />
@@ -72,14 +102,14 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
               </div>
               <div>
                 <label className="block text-gray-700 font-semibold mb-1">
-                  dID
+                  dIN
                 </label>
                 <input
                   type="text"
                   name="dIN"
-                  placeholder="dID"
+                  placeholder="dIN"
                   className="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formdata.dID}
+                  value={formdata.dIN}
                   onChange={(e) =>
                     setformdata({
                       ...formdata,
@@ -187,7 +217,7 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
                       </div>
                       <div
                         className="cursor-pointer text-green-600"
-                        // onClick={() => handleUpdate(item)}
+                        onClick={() => handleUpdate(item)}
                       >
                         <SquarePen />
                       </div>
