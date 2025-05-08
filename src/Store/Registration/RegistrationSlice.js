@@ -17,7 +17,8 @@ import {
   DeleteDepartment,
   GetDepartmentByID,
   updatedepartmentBYid,
-  addpatient
+  addpatient,
+  deletepatinetById
 } from "./RegistrationThunk";
 
 const initialState = {
@@ -103,6 +104,19 @@ const RegistrationSlice = createSlice({
         state.loading = "failed";
         state.error = action.error.message;
       })
+      //////////delete patient////////
+      .addCase(deletepatinetById.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deletepatinetById.fulfilled, (state, action) => {
+        state.data = state.data.filter(
+          (patient) => patient._id !== action.payload
+        );
+      })
+      .addCase(deletepatinetById.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
 
       //get all Reception
       .addCase(getallreception.pending, (state) => {
@@ -116,8 +130,10 @@ const RegistrationSlice = createSlice({
         state.error = action.error.message;
       })
 
-      //Get consultant data by id
 
+
+
+      //Get consultant data by id
       .addCase(getConsltantDataById.pending, (state) => {
         state.status = "loading";
       })

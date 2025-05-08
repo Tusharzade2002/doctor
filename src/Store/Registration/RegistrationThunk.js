@@ -108,6 +108,29 @@ export const addpatient = createAsyncThunk(
     }
   }
 );
+//delete Patients
+export const deletepatinetById = createAsyncThunk(
+  "auth/deletepatinetById",
+  async (id, { rejectWithValue }) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      const token = user?.token;
+      const response = await axios.delete(
+        `http://localhost:8000/admin//deletepatient/${id}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      return id;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "deletation failed"
+      );
+    }
+  }
+);
 
 //GetAll Receptionlist
 export const getallreception = createAsyncThunk(
@@ -312,8 +335,7 @@ export const updatereceptionBYid = createAsyncThunk(
   }
 );
 
-const user = JSON.parse(localStorage.getItem("currentUser"));
-const token = user?.token;
+
 // get Alldepartment data
 export const getAllDepartment = createAsyncThunk(
   "auth/getAllDepartment",

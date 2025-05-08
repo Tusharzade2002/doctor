@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import Sidebar from "./Component/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { addpatient, getallPatient } from "../Store/Registration/RegistrationThunk";
+import { addpatient, getallPatient,deletepatinetById } from "../Store/Registration/RegistrationThunk";
 import {Eye,Trash2,SquarePen} from 'lucide-react'
 function Patients() {
   const dispatch = useDispatch();
@@ -18,6 +18,7 @@ function Patients() {
   }, [dispatch]);
 
   const [formData,setformData]=useState({
+      pIN:"",
       patienttype:"",
       name:"",
       address:"",
@@ -38,6 +39,12 @@ function Patients() {
       console.log("errreorrrrrrr")
     }
  }
+
+ //Hnadle Delete
+  const handleDelete=(id)=>{
+    dispatch(deletepatinetById(id));
+    window.location.reload()
+  }
 
  const handleChange = (e) => {
   setformData({ ...formData, [e.target.name]: e.target.value });
@@ -67,6 +74,20 @@ function Patients() {
                 className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto"
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div>
+                    <label className="block mb-1 font-semibold text-gray-700">
+                    Patient IN:
+                    </label>
+                    <input
+                      type="text"
+                      name="pIN"
+                      placeholder="Patient IN"
+                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.pIN}
+                      onChange={handleChange}
+                    />
+                  </div>
                   <div>
                     <label className="block mb-1 font-semibold text-gray-700">
                     Patient type:
@@ -186,7 +207,7 @@ function Patients() {
         <table class="table table-bordered w-full">
           <thead>
             <tr>
-              <th scope="col">Sr No</th>
+              <th scope="col">pIN</th>
               <th scope="col">Name</th>
               <th scope="col">Username</th>
               <th scope="col">Email</th>
@@ -201,7 +222,7 @@ function Patients() {
             {PatientsData.map((item, index) => {
               return (
                 <tr>
-                  <th>{index + 1}</th>
+                  <th>{item.pIN}</th>
                   <td>{item.name}</td>
                   <td>{item.age}</td>
                   <td>{item.address}</td>
@@ -223,7 +244,7 @@ function Patients() {
                         </div>
                         <div
                           className="cursor-pointer text-red-700 "
-                          // onClick={() => handleDelete(item._id)}
+                          onClick={() => handleDelete(item._id)}
                         >
                           <Trash2 />
                         </div>
