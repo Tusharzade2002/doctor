@@ -85,6 +85,29 @@ export const getallPatient = createAsyncThunk(
     }
   }
 );
+//add  Patients
+export const addpatient = createAsyncThunk(
+  "auth/addpatient",
+  async (formData, thunkAPI) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      const token = user?.token;
+      const response = await axios.post(
+        "http://localhost:8000/admin/savepatient",
+        formData,{
+          headers:{
+            Authorization:token
+          }
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "app patient failed"
+      );
+    }
+  }
+);
 
 //GetAll Receptionlist
 export const getallreception = createAsyncThunk(
@@ -390,7 +413,7 @@ export const GetDepartmentByID = createAsyncThunk(
   }
 );
 
-
+//update department by id
 export const updatedepartmentBYid = createAsyncThunk(
   "auth/updatedepartmentBYid",
   async ({ id, updateData }, { rejectWithValue }) => {
