@@ -131,7 +131,31 @@ export const deletepatinetById = createAsyncThunk(
     }
   }
 );
+// Get patient BY Id
+export const getPatientDataById = createAsyncThunk(
+  "auth/getPatientDataById",
+  async (pIN, { rejectWithValue }) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      const token = user?.token;
+      const response = await axios.get(
+        `http://localhost:8000/admin//getbypin/${pIN}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(response.data.data);
 
+      return response.data.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "get data by id failed"
+      );
+    }
+  }
+);
 //GetAll Receptionlist
 export const getallreception = createAsyncThunk(
   "auth/getallreception",
