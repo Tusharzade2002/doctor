@@ -35,8 +35,8 @@ export const loginUser = createAsyncThunk(
 //Get Consultant Data
 export const getConsltantData = createAsyncThunk(
   "auth/getConsltantData",
-  async (_, { rejectWithValue }) => {
-    try {
+  async ( _, { rejectWithValue }) => {
+    try { 
       const user = JSON.parse(localStorage.getItem("currentUser"));
       const token = user?.token;
 
@@ -149,6 +149,32 @@ export const getPatientDataById = createAsyncThunk(
       console.log(response.data.data);
 
       return response.data.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "get data by id failed"
+      );
+    }
+  }
+);
+
+//UPdATe patient 
+export const updatePatientDataById = createAsyncThunk(
+  "auth/updatePatientDataById",
+  async ({ id, updateData }, { rejectWithValue }) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      const token = user?.token;
+      const response = await axios.patch(
+        `http://localhost:8000/admin/updatepatient/${id}`,
+        updateData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(response);
+      return response;
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "get data by id failed"

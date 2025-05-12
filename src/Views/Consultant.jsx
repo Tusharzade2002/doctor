@@ -5,7 +5,7 @@ import { getConsltantData } from "../Store/Registration/RegistrationThunk";
 import { registerDoctor } from "../Store/Doctor/authThunk";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Component/Sidebar";
-import { Eye, SquarePen, Trash2, X } from "lucide-react";
+import { Eye, SquarePen, Trash2, X, Plus } from "lucide-react";
 import {
   deleteconsultantById,
   getConsltantDataById,
@@ -84,8 +84,6 @@ function Home() {
         window.location.reload();
       } else {
         await dispatch(registerDoctor(formData)).unwrap();
-        console.log("errrrrr");
-
         setFormData({
           cIN: "",
           name: "",
@@ -114,11 +112,29 @@ function Home() {
   //     setcreate(false);
   //   }
   // })
+const [isopenDelete,SetisopenDelete]=useState(false)
+const [deleteid,setdeleteid]=useState(null
 
+)
   const handleDelete = (id) => {
-    dispatch(deleteconsultantById(id));
-    window.location.reload();
+    setdeleteid(id);
+    SetisopenDelete(true);
   };
+
+  const confirmDelete =async()=>{
+    try{
+      await dispatch(deleteconsultantById(deleteid)).unwrap();
+      // dispatch(getConsltantData)
+
+    }catch(err){
+      console.error("Error during deletion:",err)
+      
+    }finally{
+      SetisopenDelete(false)
+      setdeleteid(null)
+            window.location.reload()
+    }
+  }
 
   // view consultant data by ID
 
@@ -178,234 +194,180 @@ function Home() {
           <div className="text-end">
             <button
               onClick={Createconslutent}
-              className="bg-blue-600 px-7 py-2 rounded-md mb-5 me-4"
+              className=" bg-blue-600  px-7 py-2 rounded-md mb-5 text-lg items-center me-4 text-white"
             >
-              Create +
+              <h1 className="flex">
+                {" "}
+                Create
+                <Plus className="ms-1" />
+              </h1>
             </button>
           </div>
+
           {create && (
             <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-[200px] absolute">
-              <div
-                 className="cursor-pointer absolute right-4 top-4 bg-black text-white p-2 rounded-full"
-                onClick={Createconslutent}
-              >
-                <X />
-              </div>
+              
               <form
                 onSubmit={handlesubmit}
-                className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto"
+                className="bg-white p-8 rounded-2xl shadow-lg max-w-4xl mx-auto"
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* CIN */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      CIN:
-                    </label>
-                    <input
-                      type="number"
-                      name="cIN"
-                      placeholder="CIN"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.cIN || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="number"
+                    name="cIN"
+                    placeholder="CIN"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.cIN || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Username */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Username:
-                    </label>
-                    <input
-                      type="text"
-                      name="username"
-                      placeholder="Username"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.username || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.username || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Name */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Name:
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Name"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.name || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.name || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Gender */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Gender:
-                    </label>
-                    <input
-                      type="text"
-                      name="gender"
-                      placeholder="Gender"
-                      list="genders"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.gender || ""}
-                      onChange={handleChange}
-                    />
-                    <datalist id="genders">
-                      <option value="Male" />
-                      <option value="Female" />
-                      <option value="Other" />
-                    </datalist>
-                  </div>
+                  <input
+                    type="text"
+                    name="gender"
+                    placeholder="Gender"
+                    list="genders"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.gender || ""}
+                    onChange={handleChange}
+                  />
+                  <datalist id="genders">
+                    <option value="Male" />
+                    <option value="Female" />
+                    <option value="Other" />
+                  </datalist>
 
                   {/* DOB */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Date of Birth:
-                    </label>
-                    <input
-                      type="date"
-                      name="dateOfBirth"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.dateOfBirth || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.dateOfBirth || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Specialty */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Specialty:
-                    </label>
-                    <input
-                      type="text"
-                      name="specialty"
-                      placeholder="Specialty"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.specialty || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="specialty"
+                    placeholder="Specialty"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.specialty || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* License Number */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Medical License Number:
-                    </label>
-                    <input
-                      type="text"
-                      name="medicalLicenseNumber"
-                      placeholder="License Number"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.medicalLicenseNumber || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="medicalLicenseNumber"
+                    placeholder="Medical License Number"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.medicalLicenseNumber || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Experience */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Years of Experience:
-                    </label>
-                    <input
-                      type="text"
-                      name="yearsOfExperience"
-                      placeholder="Years of Experience"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.yearsOfExperience || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="yearsOfExperience"
+                    placeholder="Years of Experience"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.yearsOfExperience || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Phone */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Phone Number:
-                    </label>
-                    <input
-                      type="number"
-                      name="phoneNumber"
-                      placeholder="Phone Number"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.phoneNumber || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="number"
+                    name="phoneNumber"
+                    placeholder="Phone Number"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.phoneNumber || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Password */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Password:
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.password || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.password || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Email */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Email:
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.email || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.email || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Specialization */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Specialization:
-                    </label>
-                    <input
-                      type="text"
-                      name="specialization"
-                      placeholder="Specialization"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.specialization || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="specialization"
+                    placeholder="Specialization"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.specialization || ""}
+                    onChange={handleChange}
+                  />
 
                   {/* Qualifications */}
-                  <div>
-                    <label className="block mb-1 font-semibold text-gray-700">
-                      Qualifications:
-                    </label>
-                    <input
-                      type="text"
-                      name="qualifications"
-                      placeholder="Qualifications"
-                      className="w-full border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={formData.qualifications || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="qualifications"
+                    placeholder="Qualifications"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
+                    value={formData.qualifications || ""}
+                    onChange={handleChange}
+                  />
                 </div>
-
-                {/* Submit Button */}
-                <div className="text-center mt-8">
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-8 py-1 rounded-md hover:bg-blue-700 transition"
-                  >
-                    {isEditing ? "Update" : "Create"}
-                  </button>
-                </div>
+               
+                   <div className="text-end">
+                      <button
+                        type="submit"
+                        onClick={Createconslutent}
+                        className="bg-slate-700 mx-3 text-white px-10 py-2 rounded-lg hover:bg-slate-400 transition-shadow shadow-md"
+                      >
+                        Cancel
+                      </button>
+                  
+                  
+                      <button
+                        type="submit"
+                        className="bg-blue-600 mx-3 text-white px-10 py-2 rounded-lg hover:bg-blue-700 transition-shadow shadow-md"
+                      >
+                        {isEditing ? "Update" : "Create"}
+                      </button>
+                      </div>
+                 
+                  
+               
               </form>
             </div>
           )}
@@ -472,56 +434,93 @@ function Home() {
               })}
             </div>
           )}
-
-          <table class="table table-bordered w-full">
-            <thead>
-              <tr>
-                <th scope="col">cIN</th>
-                <th scope="col">Name</th>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">phone number</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {consultantdata.map((item, index) => {
-                return (
-                  <tr>
-                    <th>{item.cIN}</th>
-                    <td>{item.name}</td>
-                    <td>{item.username}</td>
-                    <td>{item.email}</td>
-                    <td>{item.phoneNumber}</td>
-                    <td>{item.gender}</td>
-                    <td>
-                      <div className="flex justify-around">
-                        <div
-                          className="cursor-pointer text-blue-700"
-                          onClick={() => handleview(item.cIN)}
-                        >
-                          <Eye />
+          {
+            isopenDelete && (
+              <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
+                <div className="text-center"> Are you sure to delete?</div>
+           <div className="flex  mt-7">               
+        <button
+          onClick={() => setShowDeleteDialog(false)}
+          className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400"
+        >
+          CANCEL
+       </button>
+        <button
+          onClick={confirmDelete}
+          className="px-4 py-2 m-3 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          OKAY
+        </button>
+      </div>
+              </div>
+            )
+          }
+          <div className="overflow-x-auto bg-white rounded shadow">
+            <table class="w-full text-sm text-left table-auto">
+              <thead className="text-gray-700 bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 border" scope="col">
+                    cIN
+                  </th>
+                  <th className="px-4 py-2 border" scope="col">
+                    Name
+                  </th>
+                  <th className="px-4 py-2 border" scope="col">
+                    Username
+                  </th>
+                  <th className="px-4 py-2 border" scope="col">
+                    Email
+                  </th>
+                  <th className="px-4 py-2 border" scope="col">
+                    phone number
+                  </th>
+                  <th className="px-4 py-2 border" scope="col">
+                    Gender
+                  </th>
+                  <th className="px-4 py-2 border" scope="col">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {consultantdata.map((item, index) => {
+                  return (
+                    <tr className="hover:bg-gray-50">
+                      <th className="px-4 py-2 border">{item.cIN}</th>
+                      <td className="px-4 py-2 border">{item.name}</td>
+                      <td className="px-4 py-2 border">{item.username}</td>
+                      <td className="px-4 py-2 border">{item.email}</td>
+                      <td className="px-4 py-2 border">{item.phoneNumber}</td>
+                      <td className="px-4 py-2 border">{item.gender}</td>
+                      <td>
+                        <div className="flex justify-around">
+                          <div
+                            className="cursor-pointer text-blue-700"
+                            onClick={() => handleview(item.cIN)}
+                          >
+                            <Eye />
+                          </div>
+                          <div
+                            className="cursor-pointer text-green-600"
+                            onClick={() => handleUpdate(item)}
+                          >
+                            <SquarePen />
+                          </div>
+                          <div
+                            className="cursor-pointer text-red-700"
+                            onClick={() => handleDelete(item._id || item.id)}
+                            // onClick={()=>SetisopenDelete(true)}
+                          >
+                            <Trash2 />
+                          </div>
                         </div>
-                        <div
-                          className="cursor-pointer text-green-600"
-                          onClick={() => handleUpdate(item)}
-                        >
-                          <SquarePen />
-                        </div>
-                        <div
-                          className="cursor-pointer text-red-700 "
-                          onClick={() => handleDelete(item._id)}
-                        >
-                          <Trash2 />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

@@ -29,6 +29,7 @@ function Login() {
       localStorage.setItem("currentUser", JSON.stringify(user));
       setUsername("");
       setPassword("");
+      
       setTimeout(() => {
         navigate("/dashboard");
       }, 3000);
@@ -90,7 +91,6 @@ function Login() {
           <h1 className="text-3xl items-start mb-10">Sign In To Doctor App</h1>
 
           <Link to="/mainpage" className=" w-full text-start">
-            {" "}
             <ArrowLeft className="flex items-start" />
           </Link>
           <form className="flex flex-col w-full">
@@ -100,8 +100,6 @@ function Login() {
               className="w-[90%] border rounded-md my-3 px-4 py-2"
               value={username}
               onChange={(e)=>setUsername(e.target.value)}
-       
-
             />
             <input
               type="password"

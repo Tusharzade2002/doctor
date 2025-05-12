@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Component/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { X, SquarePen, Eye, Trash2 } from "lucide-react";
+import { X, SquarePen, Eye, Trash2 ,Plus } from "lucide-react";
 import { getAllDepartment ,RegisterDepartment,DeleteDepartment,GetDepartmentByID, updatedepartmentBYid} from "../Store/Registration/RegistrationThunk";
 function Department() {
   const [Isopen, setIsopen] = useState(false);
@@ -51,9 +51,14 @@ function Department() {
   };
 
   // delete Department
+  const [deleteisopen,setdeleteisopen]=useState(false)
+    
+         
    const handleDelete=(id)=>{
+    setdeleteisopen(false)
            dispatch(DeleteDepartment(id));
            window.location.reload()
+          
    }
 
 // GET deparment by id
@@ -90,11 +95,19 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
         <h1>http://localhost:8000/admin/alldepartment</h1>
         <h1>http://localhost:8000/admin/createdepartment</h1>
 
-        <div onClick={() => setIsopen(!Isopen)} className="text-end me-6 mb-2">
-          <button className="bg-blue-700 px-8 py-2 rounded-lg">Create +</button>
+        <div className="text-end">
+          <button
+            onClick={() => setIsopen(!Isopen)}
+            className=" bg-blue-600  px-7 py-2 rounded-md mb-5 text-lg items-center me-4 text-white"
+          >
+          <h1 className="flex"> Create<Plus className="ms-1"/></h1>
+
+          </button>
         </div>
+
+       
         {Isopen && (
-          <div className="bg-white absolute top-28 right-56 shadow-lg ">
+          <div className="bg-white absolute top-28 right-56 shadow-lg  ">
             <div className="grid grid-cols-1 md:grid-cols-1 gap-6 my-5 mx-16 relative">
               <h1 className="text-center text-xl font-bold">Department</h1>
               <div className="absolute top-0 -right-10 bg-black text-white">
@@ -190,22 +203,33 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
             </div>
           )
         }
+        {
+          deleteisopen && (
+            <div className="bg-white absolute top-28 right-56 shadow-lg ">
+            <div>
+              <button onClick={()=>setdeleteisopen(false)} className="bg-slate-600 text-white" >Cancel</button>
+              <button  onClick={() => handleDelete(item._id)}>Okay</button>
+            </div>
+            </div>
+          )
+        }
+          <div className="overflow-x-auto bg-white rounded shadow">
         <table class="table table-bordered w-full">
-          <thead>
+          <thead className="text-gray-700 bg-gray-100">
             <tr>
-              <th scope="col">cIN</th>
-              <th scope="col">Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Action</th>
+              <th className="px-4 py-2 border" scope="col">cIN</th>
+              <th className="px-4 py-2 border" scope="col">Name</th>
+              <th className="px-4 py-2 border" scope="col">Description</th>
+              <th className="px-4 py-2 border" scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
             {Department.map((item, index) => {
               return (
-                <tr>
-                  <th>{item.dIN}</th>
-                  <td>{item.name}</td>
-                  <td>{item.description}</td>
+                <tr className="hover:bg-gray-50">
+                  <th className="px-4 py-2 border">{item.dIN}</th>
+                  <td className="px-4 py-2 border">{item.name}</td>
+                  <td className="px-4 py-2 border">{item.description}</td>
 
                   <td>
                     <div className="flex justify-around">
@@ -223,7 +247,8 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
                       </div>
                       <div
                         className="cursor-pointer text-red-700 "
-                        onClick={() => handleDelete(item._id)}
+                        onClick={()=>setdeleteisopen(true)}  
+                        // onClick={() => handleDelete(item._id)}
                       >
                         <Trash2 />
                       </div>
@@ -234,6 +259,7 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

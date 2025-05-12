@@ -8,7 +8,7 @@ import {
   deletereceptionById,
   updatereceptionBYid,
 } from "../Store/Registration/RegistrationThunk";
-import { Eye, SquarePen, Trash2, X } from "lucide-react";
+import { Eye, SquarePen, Trash2, X,Plus } from "lucide-react";
 
 function Receptionlist() {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ function Receptionlist() {
   };
 
   const [formdata, setformdata] = useState({
-    rID: "",
+    dIN: "",
     name: "",
     username: "",
     email: "",
@@ -51,6 +51,7 @@ function Receptionlist() {
         window.location.reload();
       } else {
         await dispatch(registerReception(formdata)).unwrap();
+        window.location.reload()
       }
       setformdata({
         rID: "",
@@ -120,35 +121,30 @@ function Receptionlist() {
         {status === "loading" && <p>Loading posts...</p>}
         {status === "failed" && <p style={{ color: "red" }}>Error: {error}</p>}
 
+
         <div className="text-end">
           <button
-            onClick={Createconslutent}
-            className="bg-blue-600 px-7 py-2 rounded-md mb-5 me-4"
+             onClick={Createconslutent}
+            className=" bg-blue-600  px-7 py-2 rounded-md mb-5 text-lg items-center me-4 text-white"
           >
-            Create +
+          <h1 className="flex"> Create<Plus className="ms-1"/></h1>
+
           </button>
         </div>
+       
         {create && (
           <div className="bg-slate-100 shadow-2xl rounded-md ms-10  absolute top-24 right-32 ">
             <form
               onSubmit={handlesubmit}
               className="relative bg-white p-6 rounded-lg shadow-md w-full max-w-4xl mx-auto"
             >
-              {/* Close Button */}
-              <div
-                onClick={() => setcreate(false)}
-                className="cursor-pointer absolute right-4 top-4 bg-black text-white p-2 rounded-full"
-              >
-                <X />
-              </div>
+              
 
               {/* Form Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 {/* RID */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    RID
-                  </label>
+                 
                   <input
                     type="text"
                     name="rID"
@@ -165,9 +161,7 @@ function Receptionlist() {
                 </div>
                 {/* Name */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Name
-                  </label>
+                 
                   <input
                     type="text"
                     name="name"
@@ -185,9 +179,7 @@ function Receptionlist() {
 
                 {/* Username */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Username
-                  </label>
+                 
                   <input
                     type="text"
                     name="username"
@@ -205,9 +197,7 @@ function Receptionlist() {
 
                 {/* Gender */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Gender
-                  </label>
+                  
                   <input
                     type="text"
                     name="gender"
@@ -231,9 +221,7 @@ function Receptionlist() {
 
                 {/* DOB */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Date of Birth
-                  </label>
+                
                   <input
                     type="date"
                     name="dateOfBirth"
@@ -250,9 +238,7 @@ function Receptionlist() {
 
                 {/* Phone Number */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Phone Number
-                  </label>
+                  
                   <input
                     type="number"
                     name="phoneNumber"
@@ -270,9 +256,7 @@ function Receptionlist() {
 
                 {/* Email */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Email
-                  </label>
+             
                   <input
                     type="email"
                     name="email"
@@ -290,9 +274,7 @@ function Receptionlist() {
 
                 {/* Password */}
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Password
-                  </label>
+                  
                   <input
                     type="password"
                     name="password"
@@ -309,15 +291,31 @@ function Receptionlist() {
                 </div>
               </div>
 
-              {/* Submit Button */}
-              <div className="mt-6 text-center">
+              <div className="text-end mt-3">
+                      <button
+                        type="submit"
+                        onClick={() => setcreate(false)}
+                        className="bg-slate-700 mx-3 text-white px-10 py-2 rounded-lg hover:bg-slate-400 transition-shadow shadow-md"
+                      >
+                        Cancel
+                      </button>
+                  
+                  
+                      <button
+                        type="submit"
+                        className="bg-blue-600 mx-3 text-white px-10 py-2 rounded-lg hover:bg-blue-700 transition-shadow shadow-md"
+                      >
+                        {isEditing ? "Update" : "Create"}
+                      </button>
+                      </div>
+              {/* <div className="mt-6 text-center">
                 <button
                   type="submit"
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-2 rounded-md shadow-md transition-all"
                 >
                   Create
                 </button>
-              </div>
+              </div> */}
             </form>
           </div>
         )}
@@ -495,31 +493,31 @@ function Receptionlist() {
             </div>
           </div>
         )}
-        <div>
+        <div className="overflow-x-auto bg-white rounded shadow">
           <table class="table table-bordered w-full">
-            <thead>
+            <thead className="text-gray-700 bg-gray-100">
               <tr>
-                <th scope="col">cIN</th>
-                <th scope="col">Name</th>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">Date Of Birth</th>
-                <th scope="col">phone number</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Action</th>
+                <th className="px-4 py-2 border" scope="col">cIN</th>
+                <th className="px-4 py-2 border" scope="col">Name</th>
+                <th className="px-4 py-2 border" scope="col">Username</th>
+                <th className="px-4 py-2 border" scope="col">Email</th>
+                <th className="px-4 py-2 border" scope="col">Date Of Birth</th>
+                <th className="px-4 py-2 border" scope="col">phone number</th>
+                <th className="px-4 py-2 border" scope="col">Gender</th>
+                <th className="px-4 py-2 border" scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
               {Receptiondata.map((item, index) => {
                 return (
-                  <tr>
-                    <th>{item.rID}</th>
-                    <td>{item.name}</td>
-                    <td>{item.username}</td>
-                    <td>{item.email}</td>
-                    <td>{item.dateOfBirth}</td>
-                    <td>{item.phoneNumber}</td>
-                    <td>{item.gender}</td>
+                  <tr className="hover:bg-gray-50">
+                    <th className="px-4 py-2 border">{item.rID}</th>
+                    <td className="px-4 py-2 border">{item.name}</td>
+                    <td className="px-4 py-2 border">{item.username}</td>
+                    <td className="px-4 py-2 border">{item.email}</td>
+                    <td className="px-4 py-2 border">{item.dateOfBirth}</td>
+                    <td className="px-4 py-2 border">{item.phoneNumber}</td>
+                    <td className="px-4 py-2 border">{item.gender}</td>
                     <td>
                       <div className="flex justify-around">
                         <div
