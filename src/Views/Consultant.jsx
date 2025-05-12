@@ -437,7 +437,7 @@ const [deleteid,setdeleteid]=useState(null
           {
             isopenDelete && (
               <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
-                <div className="text-center"> Are you sure to delete?</div>
+                <div className="text-center font-bold"> Are you sure to delete?</div>
            <div className="flex  mt-7">               
         <button
           onClick={() => setShowDeleteDialog(false)}

@@ -52,13 +52,23 @@ function Department() {
 
   // delete Department
   const [deleteisopen,setdeleteisopen]=useState(false)
-    
+  const [deleteid,setdeleteid]=useState(null)
          
    const handleDelete=(id)=>{
-    setdeleteisopen(false)
-           dispatch(DeleteDepartment(id));
-           window.location.reload()
-          
+    setdeleteisopen(true)
+         setdeleteid(id)
+   }
+   const confirmdelete=async()=>{
+         try{
+               await dispatch(DeleteDepartment(deleteid)).unwrap()
+         }catch(err){
+           console.log("error during deletion");
+             
+         }finally{
+            setdeleteisopen(false);
+            setdeleteid(null);
+            window.location.reload()
+         }
    }
 
 // GET deparment by id
@@ -205,10 +215,11 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
         }
         {
           deleteisopen && (
-            <div className="bg-white absolute top-28 right-56 shadow-lg ">
-            <div>
-              <button onClick={()=>setdeleteisopen(false)} className="bg-slate-600 text-white" >Cancel</button>
-              <button  onClick={() => handleDelete(item._id)}>Okay</button>
+            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
+              <div className="text-center font-bold"> Are you sure to delete?</div>
+            <div className="flex mt-7">
+              <button onClick={()=>setdeleteisopen(false)} className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400" >Cancel</button>
+              <button className="px-4 py-2 m-3 bg-red-600 text-white rounded hover:bg-red-700" onClick={confirmdelete}>Okay</button>
             </div>
             </div>
           )
@@ -247,8 +258,8 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
                       </div>
                       <div
                         className="cursor-pointer text-red-700 "
-                        onClick={()=>setdeleteisopen(true)}  
-                        // onClick={() => handleDelete(item._id)}
+                        
+                        onClick={() => handleDelete(item._id || item.id)}
                       >
                         <Trash2 />
                       </div>

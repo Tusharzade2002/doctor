@@ -8,7 +8,7 @@ import {
   getPatientDataById,
   updatePatientDataById,
 } from "../Store/Registration/RegistrationThunk";
-import { Eye, Trash2, SquarePen, X ,Plus} from "lucide-react";
+import { Eye, Trash2, SquarePen, X, Plus } from "lucide-react";
 function Patients() {
   const dispatch = useDispatch();
   const { Patient, getpatientID } = useSelector((state) => state.user);
@@ -32,7 +32,6 @@ function Patients() {
     dob: "",
     age: "",
     sex: "",
-    
   });
 
   const handlesubmit = async (e) => {
@@ -47,22 +46,20 @@ function Patients() {
       } else {
         await dispatch(addpatient(formData)).unwrap();
         // console.log(response.data.data);
-        window.location.reload()
+        window.location.reload();
         setformData({
-          pIN:"",
-          patienttype:"",
-          name:"",
-          personal_ph_no:"",
-          dob:"",
-          age:"",
-          sex:"",
+          pIN: "",
+          patienttype: "",
+          name: "",
+          personal_ph_no: "",
+          dob: "",
+          age: "",
+          sex: "",
         });
         // setopenforsingleData(!openforsingleData);
-        setisopen(!isopen)
-        setisEditing(false),
-        editingId(null),
-        dispatch(getallPatient())
-        window.location.reload()
+        setisopen(!isopen);
+        setisEditing(false), editingId(null), dispatch(getallPatient());
+        window.location.reload();
       }
     } catch (err) {
       console.log("errreorrrrrrr");
@@ -70,10 +67,25 @@ function Patients() {
   };
 
   //Hnadle patient Delete
+  const [deleteopen, setdeleteopen] = useState(false);
+  const [deleteid, setdeleteid] = useState(null);
   const handleDelete = (id) => {
-    dispatch(deletepatinetById(id));
-    window.location.reload();
+    setdeleteopen(true);
+    setdeleteid(id);
   };
+   const confirmDelete=async()=>{
+            try{
+                await dispatch(deletepatinetById(deleteid)).unwrap()
+                setdeleteopen(true)
+            }catch(err){
+                console.log("ereor during deletion");
+            }finally{
+                 setdeleteopen(false)
+                 setdeleteid(null)
+                 window.location.reload();
+            }
+   }
+
 
   //get  patient BY id
   const [openforsingleData, setopenforsingleData] = useState(false);
@@ -103,7 +115,6 @@ function Patients() {
       sex: item.sex || "",
       dob: item.dob || "",
     });
-  
   };
 
   const handleChange = (e) => {
@@ -123,8 +134,11 @@ function Patients() {
             onClick={() => setisopen(!isopen)}
             className=" bg-blue-600  px-7 py-2 rounded-md mb-5 text-lg items-center me-4 text-white"
           >
-          <h1 className="flex"> Create<Plus className="ms-1"/></h1>
-
+            <h1 className="flex">
+              {" "}
+              Create
+              <Plus className="ms-1" />
+            </h1>
           </button>
         </div>
         {isopen && (
@@ -135,7 +149,6 @@ function Patients() {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-            
                   <input
                     type="text"
                     name="pIN"
@@ -146,7 +159,6 @@ function Patients() {
                   />
                 </div>
                 <div>
-                 
                   <input
                     type="text"
                     name="patienttype"
@@ -157,7 +169,6 @@ function Patients() {
                   />
                 </div>
                 <div>
-                  
                   <input
                     type="text"
                     name="name"
@@ -169,7 +180,6 @@ function Patients() {
                 </div>
 
                 <div>
-
                   <input
                     type="text"
                     name="address"
@@ -180,7 +190,6 @@ function Patients() {
                   />
                 </div>
                 <div>
-                
                   <input
                     type="text"
                     name="personal_ph_no"
@@ -192,7 +201,6 @@ function Patients() {
                 </div>
 
                 <div>
-               
                   <input
                     type="text"
                     name="sex"
@@ -208,7 +216,6 @@ function Patients() {
                   </datalist>
                 </div>
                 <div>
-                 
                   <input
                     type="date"
                     name="dob"
@@ -219,7 +226,6 @@ function Patients() {
                   />
                 </div>
                 <div>
-                
                   <input
                     type="number"
                     name="age"
@@ -233,22 +239,21 @@ function Patients() {
 
               {/* Submit Button */}
               <div className="text-end mt-3">
-                      <button
-                        type="submit"
-                        onClick={()=>setisopen(false)}
-                        className="bg-slate-700 mx-3 text-white px-10 py-2 rounded-lg hover:bg-slate-400 transition-shadow shadow-md"
-                      >
-                        Cancel
-                      </button>
-                  
-                  
-                      <button
-                        type="submit"
-                        className="bg-blue-600 mx-3 text-white px-10 py-2 rounded-lg hover:bg-blue-700 transition-shadow shadow-md"
-                      >
-                        {isEditing ? "Update" : "Create"}
-                      </button>
-                      </div>
+                <button
+                  type="submit"
+                  onClick={() => setisopen(false)}
+                  className="bg-slate-700 mx-3 text-white px-10 py-2 rounded-lg hover:bg-slate-400 transition-shadow shadow-md"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="bg-blue-600 mx-3 text-white px-10 py-2 rounded-lg hover:bg-blue-700 transition-shadow shadow-md"
+                >
+                  {isEditing ? "Update" : "Create"}
+                </button>
+              </div>
             </form>
           </div>
         )}
@@ -309,57 +314,93 @@ function Patients() {
               );
             })}
           </div>
-        )}  
+        )}
+        {deleteopen && (
+          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
+            <div className="text-center font-bold">
+              {" "}
+              Are you sure to delete?
+            </div>
+            <div className="flex  mt-7">
+              <button
+                onClick={() => setShowDeleteDialog(false)}
+                className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                CANCEL
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 m-3 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                OKAY
+              </button>
+            </div>
+          </div>
+        )}
         <div className="overflow-x-auto bg-white rounded shadow">
-        <table class="table table-bordered w-full">
-          <thead className="text-gray-700 bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 border" scope="col">pIN</th>
-              <th className="px-4 py-2 border" scope="col">Name</th>
-              <th className="px-4 py-2 border" scope="col">Username</th>
-              <th className="px-4 py-2 border" scope="col">Email</th>
-              <th className="px-4 py-2 border" scope="col">phone number</th>
-              <th className="px-4 py-2 border" scope="col">Gender</th>
-              <th className="px-4 py-2 border" scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {PatientsData.map((item, index) => {
-              return (
-                <tr className="hover:bg-gray-50">
-                  <th className="px-4 py-2 border">{item.pIN}</th>
-                  <td className="px-4 py-2 border">{item.name}</td>
-                  <td className="px-4 py-2 border">{item.age}</td>
-                  <td className="px-4 py-2 border">{item.address}</td>
-                  <td className="px-4 py-2 border">{item.personal_ph_no}</td>
-                  <td className="px-4 py-2 border">{item.sex}</td>
-                  <td>
-                    <div className="flex justify-around">
-                      <div
-                        className="cursor-pointer text-blue-700"
-                        onClick={() => handleview(item.pIN)}
-                      >
-                        <Eye />
+          <table class="table table-bordered w-full">
+            <thead className="text-gray-700 bg-gray-100">
+              <tr>
+                <th className="px-4 py-2 border" scope="col">
+                  pIN
+                </th>
+                <th className="px-4 py-2 border" scope="col">
+                  Name
+                </th>
+                <th className="px-4 py-2 border" scope="col">
+                  Username
+                </th>
+                <th className="px-4 py-2 border" scope="col">
+                  Email
+                </th>
+                <th className="px-4 py-2 border" scope="col">
+                  phone number
+                </th>
+                <th className="px-4 py-2 border" scope="col">
+                  Gender
+                </th>
+                <th className="px-4 py-2 border" scope="col">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {PatientsData.map((item, index) => {
+                return (
+                  <tr className="hover:bg-gray-50">
+                    <th className="px-4 py-2 border">{item.pIN}</th>
+                    <td className="px-4 py-2 border">{item.name}</td>
+                    <td className="px-4 py-2 border">{item.age}</td>
+                    <td className="px-4 py-2 border">{item.address}</td>
+                    <td className="px-4 py-2 border">{item.personal_ph_no}</td>
+                    <td className="px-4 py-2 border">{item.sex}</td>
+                    <td>
+                      <div className="flex justify-around">
+                        <div
+                          className="cursor-pointer text-blue-700"
+                          onClick={() => handleview(item.pIN)}
+                        >
+                          <Eye />
+                        </div>
+                        <div
+                          className="cursor-pointer text-green-600"
+                          onClick={() => handleUpdate(item)}
+                        >
+                          <SquarePen />
+                        </div>
+                        <div
+                          className="cursor-pointer text-red-700 "
+                          onClick={() => handleDelete(item._id || item.id)}
+                        >
+                          <Trash2 />
+                        </div>
                       </div>
-                      <div
-                        className="cursor-pointer text-green-600"
-                        onClick={() => handleUpdate(item)}
-                      >
-                        <SquarePen />
-                      </div>
-                      <div
-                        className="cursor-pointer text-red-700 "
-                        onClick={() => handleDelete(item._id)}
-                      >
-                        <Trash2 />
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

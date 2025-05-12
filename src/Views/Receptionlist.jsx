@@ -85,11 +85,24 @@ function Receptionlist() {
   }, [ReceptionByid]);
 
   //delete reception data by id
-
+const [deleteopen,setdeleteopen]=useState(false);
+const [deleteid,setdeleteid]=useState(null)
   const handledelte = (id) => {
-    dispatch(deletereceptionById(id));
-    window.location.reload();
+     setdeleteopen(true)
+     setdeleteid(id)
   };
+
+  const confirmDelete=async()=>{
+     try{
+      dispatch(deletereceptionById(deleteid)).unwrap()
+     }catch(err){
+      console.log("error during deletion");
+     }finally{
+      setdeleteopen(false);
+      setdeleteid(null)
+      window.location.reload()
+     }
+  }
   // update reception data by id
   const [isEditing, setisEditing] = useState(false);
   const [editingId, seteditingId] = useState(null);
@@ -319,162 +332,7 @@ function Receptionlist() {
             </form>
           </div>
         )}
-        {/* {updateformopen && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[350px] absolute top-10 right-44 ">
-            <form onSubmit={updatehandlesubmit}>
-              <div onClick={()=>setupdateformopen(false)} className="cursor-pointer absolute right-4 top-4 bg-black text-white" > <X/></div>
-              <div className="flex flex-wrap">
-                <div className="flex m-3 items-center">
-                  <div className="me-3">Name:</div>
-                  <input
-                    type="text"
-                    name="rID"
-                    placeholder="RID"
-                    className="border w-52 px-3 py-1 rounded-md"
-                    value={formdata.rID}
-                    onChange={(e) =>
-                      setformdata({
-                        ...formdata,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="flex m-3 items-center">
-                  <div className="me-3">Name:</div>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    className="border w-52 px-3 py-1 rounded-md"
-                    value={formdata.name}
-                    onChange={(e) =>
-                      setformdata({
-                        ...formdata,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">Username:</div>
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="username"
-                    className="border w-52 px-3 py-1 rounded-md"
-                    value={formdata.username}
-                    onChange={(e) =>
-                      setformdata({
-                        ...formdata,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">Gender:</div>
-                  <input
-                    type="text"
-                    name="gender"
-                    placeholder="Gender"
-                    className="border w-52 px-3 py-1 rounded-md"
-                    value={formdata.gender}
-                    onChange={(e) =>
-                      setformdata({
-                        ...formdata,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
-                    list="genders"
-                  />
-                  <datalist id="genders">
-                    <option value="Male"></option>
-                    <option value="Female"></option>
-                    <option value="Other"></option>
-                  </datalist>
-                </div>
-                <div className="flex m-3 mx-4 items-center">
-                  <div className="me-3 text-lg">DOB:</div>
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    placeholder="DOB"
-                    className="border w-52 px-3 py-1 rounded-md"
-                    value={formdata.dateOfBirth}
-                    onChange={(e) =>
-                      setformdata({
-                        ...formdata,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">Phone Number:</div>
-                  <input
-                    type="number"
-                    name="phoneNumber"
-                    placeholder="phoneNumber"
-                    className="border w-52 px-3 py-1 rounded-md"
-                    value={formdata.phoneNumber}
-                    onChange={(e) =>
-                      setformdata({
-                        ...formdata,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">email:</div>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="email"
-                    className="border w-52 px-3 py-1 rounded-md"
-                    value={formdata.email}
-                    onChange={(e) =>
-                      setformdata({
-                        ...formdata,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="flex m-3 items-center">
-                  <div className="me-3 text-lg">Password:</div>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    className="border w-52 px-3 py-1 rounded-md"
-                    value={formdata.password}
-                    onChange={(e) =>
-                      setformdata({
-                        ...formdata,
-                        [e.target.name]: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <div className="block text-center my-4">
-                {" "}
-                <button
-                  type="submit"
-                  className=" bg-blue-600 px-7 py-2 rounded-md"
-                >
-                  Create
-                </button>
-              </div>
-            </form>
-          </div>
-        )} */}
+       
         {Isopen && (
           <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[450px] absolute top-30 right-96 p-10 mx-12 ">
             {Object.entries(Receptionid).map(([key, value]) => (
@@ -490,6 +348,28 @@ function Receptionlist() {
               >
                 Cancel
               </button>{" "}
+            </div>
+          </div>
+        )}
+         {deleteopen && (
+          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
+            <div className="text-center font-bold">
+              {" "}
+              Are you sure to delete?
+            </div>
+            <div className="flex  mt-7">
+              <button
+                onClick={() => setShowDeleteDialog(false)}
+                className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                CANCEL
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 m-3 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                OKAY
+              </button>
             </div>
           </div>
         )}
