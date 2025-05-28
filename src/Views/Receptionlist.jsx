@@ -39,6 +39,8 @@ function Receptionlist() {
     dateOfBirth: "",
     password: "",
   });
+  const [isEditing, setisEditing] = useState(false);
+  const [editingId, seteditingId] = useState(null);
 
   const handlesubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +49,6 @@ function Receptionlist() {
         await dispatch(
           updatereceptionBYid({ id: editingId, updateData: formdata })
         ).unwrap();
-        setcreate(false);
         window.location.reload();
       } else {
         await dispatch(registerReception(formdata)).unwrap();
@@ -95,6 +96,7 @@ const [deleteid,setdeleteid]=useState(null)
   const confirmDelete=async()=>{
      try{
       dispatch(deletereceptionById(deleteid)).unwrap()
+        setdeleteopen(false);
      }catch(err){
       console.log("error during deletion");
      }finally{
@@ -104,8 +106,7 @@ const [deleteid,setdeleteid]=useState(null)
      }
   }
   // update reception data by id
-  const [isEditing, setisEditing] = useState(false);
-  const [editingId, seteditingId] = useState(null);
+
   const handleupdate = (item) => {
     setformdata({
       rID: item.rID || "",
@@ -146,10 +147,11 @@ const [deleteid,setdeleteid]=useState(null)
         </div>
        
         {create && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10  absolute top-24 right-32 ">
+         <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed pt-28 p-48">
+            <div className="bg-white p-5 rounded-2xl shadow-lg w-[450px] mx-auto">
             <form
               onSubmit={handlesubmit}
-              className="relative bg-white p-6 rounded-lg shadow-md w-full max-w-4xl mx-auto"
+              className="relative bg-white p-6 w-full max-w-4xl mx-auto"
             >
               
 
@@ -304,7 +306,7 @@ const [deleteid,setdeleteid]=useState(null)
                 </div>
               </div>
 
-              <div className="text-end mt-3">
+              <div className="flex justify-center mt-6">
                       <button
                         type="submit"
                         onClick={() => setcreate(false)}
@@ -321,20 +323,15 @@ const [deleteid,setdeleteid]=useState(null)
                         {isEditing ? "Update" : "Create"}
                       </button>
                       </div>
-              {/* <div className="mt-6 text-center">
-                <button
-                  type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-2 rounded-md shadow-md transition-all"
-                >
-                  Create
-                </button>
-              </div> */}
+           
             </form>
+          </div>
           </div>
         )}
        
         {Isopen && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 w-[450px] absolute top-30 right-96 p-10 mx-12 ">
+          <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed pt-24">
+            <div className="bg-white  rounded-2xl shadow-lg w-96 mx-auto p-6">
             {Object.entries(Receptionid).map(([key, value]) => (
               <p key={key}>
                 <strong>{key}:</strong> {value}
@@ -350,16 +347,18 @@ const [deleteid,setdeleteid]=useState(null)
               </button>{" "}
             </div>
           </div>
+          </div>
         )}
          {deleteopen && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
+          <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-52 px-[600px]">
+              <div className="bg-white  p-8 rounded-2xl shadow-lg w-64">
             <div className="text-center font-bold">
               {" "}
               Are you sure to delete?
             </div>
             <div className="flex  mt-7">
               <button
-                onClick={() => setShowDeleteDialog(false)}
+                onClick={() => setdeleteopen(false)}
                 className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400"
               >
                 CANCEL
@@ -370,6 +369,7 @@ const [deleteid,setdeleteid]=useState(null)
               >
                 OKAY
               </button>
+            </div>
             </div>
           </div>
         )}
@@ -390,7 +390,7 @@ const [deleteid,setdeleteid]=useState(null)
             <tbody>
               {Receptiondata.map((item, index) => {
                 return (
-                  <tr className="hover:bg-gray-50">
+                  <tr className="hover:bg-gray-100">
                     <th className="px-4 py-2 border">{item.rID}</th>
                     <td className="px-4 py-2 border">{item.name}</td>
                     <td className="px-4 py-2 border">{item.username}</td>

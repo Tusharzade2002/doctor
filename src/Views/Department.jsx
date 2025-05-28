@@ -117,10 +117,10 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
 
        
         {Isopen && (
-          <div className="bg-white absolute top-28 right-56 shadow-lg  ">
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-6 my-5 mx-16 relative">
+          <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-20 pt-36 ">
+            <div className="bg-white p-5 rounded-2xl shadow-lg w-96 mx-auto">
               <h1 className="text-center text-xl font-bold">Department</h1>
-              <div className="absolute top-0 -right-10 bg-black text-white">
+              <div className="absolute top-0 -right-10 bg-black text-white cursor-pointer" onClick={()=>setIsopen(false)}>
                 <X />
               </div>
               <div>
@@ -179,7 +179,7 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
               </div>
 
               <div onClick={handlesubmit} className="text-center">
-                <button className="bg-blue-600 px-9 text-xl py-1 rounded-lg">
+                <button className="bg-green-700 text-white px-9 mt-2 text-xl py-1 rounded-lg">
                   Submit
                 </button>{" "}
               </div>
@@ -188,7 +188,8 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
         )}
         {
           viewdataopen && (
-            <div className="bg-white absolute top-28 right-56 shadow-lg px-10 py-3">
+            <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-48">
+            <div className="bg-white p-5 rounded-2xl shadow-lg w-96 mx-auto">
                {
                 getdatabyrid.map((item)=>{
               return(
@@ -205,21 +206,24 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
                       <b>Desription:</b>
                       {item.description}
                     </h1>
-                  <div onClick={()=>setviewdataopen(false)} className="text-center m-5">   <button className="bg-blue-500 px-5 py-1">Cancel</button> </div>
+                  <div onClick={()=>setviewdataopen(false)} className="text-center m-5">   <button className="bg-blue-700 text-white rounded-md px-7 py-2">Cancel</button> </div>
                 </div>
               )
                 })
                }
             </div>
+            </div>
           )
         }
         {
           deleteisopen && (
-            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
+              <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-52 px-[600px]">
+              <div className="bg-white  p-8 rounded-2xl shadow-lg w-64">
               <div className="text-center font-bold"> Are you sure to delete?</div>
             <div className="flex mt-7">
               <button onClick={()=>setdeleteisopen(false)} className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400" >Cancel</button>
               <button className="px-4 py-2 m-3 bg-red-600 text-white rounded hover:bg-red-700" onClick={confirmdelete}>Okay</button>
+            </div>
             </div>
             </div>
           )
@@ -237,7 +241,7 @@ const [getdatabyrid,setgetdatabyrid]=useState([])
           <tbody>
             {Department.map((item, index) => {
               return (
-                <tr className="hover:bg-gray-50">
+                <tr className="hover:bg-gray-100">
                   <th className="px-4 py-2 border">{item.dIN}</th>
                   <td className="px-4 py-2 border">{item.name}</td>
                   <td className="px-4 py-2 border">{item.description}</td>

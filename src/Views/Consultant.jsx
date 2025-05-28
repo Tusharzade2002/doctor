@@ -112,29 +112,25 @@ function Home() {
   //     setcreate(false);
   //   }
   // })
-const [isopenDelete,SetisopenDelete]=useState(false)
-const [deleteid,setdeleteid]=useState(null
-
-)
+  const [isopenDelete, SetisopenDelete] = useState(false);
+  const [deleteid, setdeleteid] = useState(null);
   const handleDelete = (id) => {
     setdeleteid(id);
     SetisopenDelete(true);
   };
 
-  const confirmDelete =async()=>{
-    try{
+  const confirmDelete = async () => {
+    try {
       await dispatch(deleteconsultantById(deleteid)).unwrap();
       // dispatch(getConsltantData)
-
-    }catch(err){
-      console.error("Error during deletion:",err)
-      
-    }finally{
-      SetisopenDelete(false)
-      setdeleteid(null)
-            window.location.reload()
+    } catch (err) {
+      console.error("Error during deletion:", err);
+    } finally {
+      SetisopenDelete(false);
+      setdeleteid(null);
+      window.location.reload();
     }
-  }
+  };
 
   // view consultant data by ID
 
@@ -205,13 +201,12 @@ const [deleteid,setdeleteid]=useState(null
           </div>
 
           {create && (
-            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-[200px] absolute">
-              
+            <div className=" shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-10">
               <form
                 onSubmit={handlesubmit}
-                className="bg-white p-8 rounded-2xl shadow-lg max-w-4xl mx-auto"
+                className="bg-white p-8 rounded-2xl shadow-lg max-w-xl mx-auto "
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* CIN */}
                   <input
                     type="number"
@@ -327,16 +322,6 @@ const [deleteid,setdeleteid]=useState(null
                     onChange={handleChange}
                   />
 
-                  {/* Specialization */}
-                  <input
-                    type="text"
-                    name="specialization"
-                    placeholder="Specialization"
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition;"
-                    value={formData.specialization || ""}
-                    onChange={handleChange}
-                  />
-
                   {/* Qualifications */}
                   <input
                     type="text"
@@ -347,114 +332,114 @@ const [deleteid,setdeleteid]=useState(null
                     onChange={handleChange}
                   />
                 </div>
-               
-                   <div className="text-end">
-                      <button
-                        type="submit"
-                        onClick={Createconslutent}
-                        className="bg-slate-700 mx-3 text-white px-10 py-2 rounded-lg hover:bg-slate-400 transition-shadow shadow-md"
-                      >
-                        Cancel
-                      </button>
-                  
-                  
-                      <button
-                        type="submit"
-                        className="bg-blue-600 mx-3 text-white px-10 py-2 rounded-lg hover:bg-blue-700 transition-shadow shadow-md"
-                      >
-                        {isEditing ? "Update" : "Create"}
-                      </button>
-                      </div>
-                 
-                  
-               
+
+                <div className="text-end mt-4">
+                  <button
+                    type="submit"
+                    onClick={Createconslutent}
+                    className="bg-slate-700 mx-3 text-white px-10 py-2 rounded-lg hover:bg-slate-900 transition-shadow shadow-md"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="bg-green-700 mx-3 text-white px-10 py-2 rounded-lg hover:bg-green-900 transition-shadow shadow-md"
+                  >
+                    {isEditing ? "Update" : "Create"}
+                  </button>
+                </div>
               </form>
             </div>
           )}
           {opendata && (
-            <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-96 absolute px-28 py-7">
-              {selectedItem.map((item) => {
-                return (
-                  <div>
-                    <h1 className="text-xl m-2">
-                      <b>CIN:</b>
-                      {item.cIN}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>Name:</b>
-                      {item.name}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>Username:</b>
-                      {item.username}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>Gender:</b>
-                      {item.gender}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>Date Of Birth:</b>
-                      {item.dateOfBirth}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>Phone Number:</b>
-                      {item.phoneNumber}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>Qualifications:</b>
-                      {item.qualifications}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>Specialty:</b>
-                      {item.specialty}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>medicalLicenseNumber:</b>
-                      {item.medicalLicenseNumber}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>medicalLicenseNumber:</b>
-                      {item.medicalLicenseNumber}
-                    </h1>
-                    <h1 className="text-xl m-2">
-                      <b>Years Of Experience:</b>
-                      {item.yearsOfExperience}
-                    </h1>
-                    <div className="text-center">
-                      {" "}
-                      <button
-                        className=" mt-5 bg-blue-700 text-xl text-white rounded-md  px-3"
-                        onClick={() => setopendata(!opendata)}
-                      >
-                        Cancel
-                      </button>
+            <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-10">
+              <div className="bg-white p-5 rounded-2xl shadow-lg max-w-lg mx-auto">
+                {selectedItem.map((item) => {
+                  return (
+                    <div>
+                      <h1 className="text-xl m-2">
+                        <b>CIN:</b>
+                        {item.cIN}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>Name:</b>
+                        {item.name}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>Username:</b>
+                        {item.username}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>Gender:</b>
+                        {item.gender}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>Date Of Birth:</b>
+                        {item.dateOfBirth}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>Phone Number:</b>
+                        {item.phoneNumber}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>Qualifications:</b>
+                        {item.qualifications}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>Specialty:</b>
+                        {item.specialty}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>medicalLicenseNumber:</b>
+                        {item.medicalLicenseNumber}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>medicalLicenseNumber:</b>
+                        {item.medicalLicenseNumber}
+                      </h1>
+                      <h1 className="text-xl m-2">
+                        <b>Years Of Experience:</b>
+                        {item.yearsOfExperience}
+                      </h1>
+                      <div className="text-center">
+                        {" "}
+                        <button
+                          className=" mt-5 bg-slate-700 hover:bg-slate-900 text-xl text-white rounded-md py-2 px-7"
+                          onClick={() => setopendata(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
-          {
-            isopenDelete && (
-              <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
-                <div className="text-center font-bold"> Are you sure to delete?</div>
-           <div className="flex  mt-7">               
-        <button
-          onClick={() => setShowDeleteDialog(false)}
-          className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400"
-        >
-          CANCEL
-       </button>
-        <button
-          onClick={confirmDelete}
-          className="px-4 py-2 m-3 bg-red-600 text-white rounded hover:bg-red-700"
-        >
-          OKAY
-        </button>
-      </div>
+          {isopenDelete && (
+            <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-52 px-[600px]">
+              <div className="bg-white  p-8 rounded-2xl shadow-lg w-64">
+                <div className="text-center font-bold">
+                  Are you sure to delete?
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => SetisopenDelete(false)}
+                    className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400"
+                  >
+                    CANCEL
+                  </button>
+                  <button
+                    onClick={confirmDelete}
+                    className="px-4 py-2 m-3 bg-red-600 text-white rounded hover:bg-red-700"
+                  >
+                    OKAY
+                  </button>
+                </div>
               </div>
-            )
-          }
+            </div>
+          )}
           <div className="overflow-x-auto bg-white rounded shadow">
             <table class="w-full text-sm text-left table-auto">
               <thead className="text-gray-700 bg-gray-100">
@@ -485,7 +470,7 @@ const [deleteid,setdeleteid]=useState(null
               <tbody>
                 {consultantdata.map((item, index) => {
                   return (
-                    <tr className="hover:bg-gray-50">
+                    <tr className="hover:bg-gray-100">
                       <th className="px-4 py-2 border">{item.cIN}</th>
                       <td className="px-4 py-2 border">{item.name}</td>
                       <td className="px-4 py-2 border">{item.username}</td>

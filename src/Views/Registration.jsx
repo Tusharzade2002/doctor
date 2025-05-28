@@ -42,17 +42,17 @@ const Registration = () => {
     try {
       const response = await dispatch(registerUser(formData)).unwrap();
       toast.success("Registration successful!");
+    
+      navigate("/login");
+
     } catch (error) {
       console.error("Error:", error);
     }
   };
    
-  useEffect(() => {
-    setTimeout(() => {
-      navigate("/login");
-    }, [3000]);
-   
-  }, [handlesubmit]);
+  setTimeout(() => {
+    navigate("/login")
+  }, 3000);
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
    

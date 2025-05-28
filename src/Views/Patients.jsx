@@ -142,10 +142,11 @@ function Patients() {
           </button>
         </div>
         {isopen && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-[200px] absolute">
+           <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed pt-24 p-48">
+            <div className="bg-white p-5 rounded-2xl shadow-lg w-96 mx-auto">
             <form
               onSubmit={handlesubmit}
-              className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto"
+              className="bg-white p-6 rounded-lg  mx-auto"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -238,7 +239,7 @@ function Patients() {
               </div>
 
               {/* Submit Button */}
-              <div className="text-end mt-3">
+              <div className="flex mt-3">
                 <button
                   type="submit"
                   onClick={() => setisopen(false)}
@@ -256,19 +257,15 @@ function Patients() {
               </div>
             </form>
           </div>
+          </div>
         )}
         {openforsingleData && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-20 right-96 absolute px-20 py-7">
+          <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-36 pt-20">
+            <div className="bg-white p-7 rounded-2xl shadow-lg w-96 mx-auto">
             {getpatientID.map((item) => {
               return (
                 <div className="relative">
-                  <div
-                    onClick={() => setopenforsingleData(false)}
-                    className="absolute -top-3 -right-14 cursor-pointer bg-black text-white"
-                  >
-                    {" "}
-                    <X />
-                  </div>
+                 
                   <h1 className="my-3">
                     <b>PIN :</b>
                     {item.pIN}
@@ -304,26 +301,29 @@ function Patients() {
                   <div className="text-center">
                     {" "}
                     <button
-                      className=" mt-5 bg-blue-700 text-xl text-white rounded-md  px-3"
+                      className=" mt-5 bg-blue-700 text-xl text-white rounded-md py-2 px-7"
                       onClick={() => setopenforsingleData(false)}
                     >
                       Cancel
                     </button>
                   </div>
                 </div>
+               
               );
             })}
           </div>
+          </div>
         )}
         {deleteopen && (
-          <div className="bg-slate-100 shadow-2xl rounded-md ms-10 top-56 right-[500px] absolute p-10">
+            <div className="shadow-2xl rounded-md bg-black inset-0 bg-opacity-50 z-50 fixed p-52 px-[600px]">
+              <div className="bg-white  p-8 rounded-2xl shadow-lg w-64">
             <div className="text-center font-bold">
               {" "}
               Are you sure to delete?
             </div>
             <div className="flex  mt-7">
               <button
-                onClick={() => setShowDeleteDialog(false)}
+                onClick={() => setdeleteopen(false)}
                 className="px-4 py-2 m-3 bg-gray-300 rounded hover:bg-gray-400"
               >
                 CANCEL
@@ -334,6 +334,7 @@ function Patients() {
               >
                 OKAY
               </button>
+            </div>
             </div>
           </div>
         )}
@@ -367,7 +368,7 @@ function Patients() {
             <tbody>
               {PatientsData.map((item, index) => {
                 return (
-                  <tr className="hover:bg-gray-50">
+                  <tr className="hover:bg-gray-100">
                     <th className="px-4 py-2 border">{item.pIN}</th>
                     <td className="px-4 py-2 border">{item.name}</td>
                     <td className="px-4 py-2 border">{item.age}</td>
