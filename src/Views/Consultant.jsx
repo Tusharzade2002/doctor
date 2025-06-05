@@ -32,6 +32,7 @@ function Home() {
     if (decode.username) {
       setUsername(decode.username);
     }
+    
   }, []);
 
   const navigate = useNavigate();

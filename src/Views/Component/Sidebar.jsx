@@ -2,13 +2,7 @@ import React from 'react'
 import {Link} from "react-router-dom"
 import { LayoutDashboard, Menu } from "lucide-react"; 
 function Sidebar() {
-   const handlelogout = () => {
-    localStorage.removeItem("currentUser");
-
-    setTimeout(() => {
-      navigate("/login");
-    }, [3000]);
-  };
+ 
   return (
     <div className=' bg-black  text-white h-[100vh]'>
         <div className='flex flex-col'>
@@ -20,7 +14,7 @@ function Sidebar() {
            <Link className='flex my-4 text-xl' to="/receptionlist"><LayoutDashboard className='me-3'/> Receptionlist</Link>
            <Link className='flex my-4 text-xl' to="/department"><LayoutDashboard className='me-3'/> Department</Link>
               <button
-              onClick={handlelogout}
+              
               className="bg-red-500 rounded-sm px-7 py-2 mt-5"
             >
               Logout

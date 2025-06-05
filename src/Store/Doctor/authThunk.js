@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const APP_URL = import.meta.env.VITE_BACKEND_URL
 // Register Doctor
 export const registerDoctor = createAsyncThunk(
   "auth/registerDoctor",
@@ -8,7 +9,7 @@ export const registerDoctor = createAsyncThunk(
     const adminToken = localStorage.getItem("currentUser");
     try {
       const response = await axios.post(
-        "http://localhost:8000/doctor/register",
+        `${APP_URL}/doctor/register`,
         formData,
         {
             headers:{
@@ -28,7 +29,7 @@ export const registerDoctor = createAsyncThunk(
 // Login Doctor
 export  const LoginDoctor = createAsyncThunk("auth/LoginDoctor",async(formData,{rejectWithValue})=>{
     try{
-      const response =await axios.post("http://localhost:8000/doctor/login",formData);
+      const response =await axios.post(`${APP_URL}/doctor/login`,formData);
       return response.data
     }catch(err){
       return rejectWithValue(err.response?.data?.message || 'Login failed');
@@ -36,11 +37,11 @@ export  const LoginDoctor = createAsyncThunk("auth/LoginDoctor",async(formData,{
 })
 
   //delete Consultant
-  export const deleteconsultantById =createAsyncThunk("auth/deleteconsultantById",async(id,{rejectWithValue})=>{
+  export const deleteconsultantById =createAsyncThunk("auth/deleteconsultantById",async(id,{thunkAPI})=>{
     try{
       const user=JSON.parse(localStorage.getItem("currentUser"));
       const token =user?.token;     
-      const response =await axios.delete(`http://localhost:8000/admin/deleteconsultant/${id}`,{
+      const response =await axios.delete(`${APP_URL}/admin/deleteconsultant/${id}`,{
         headers:{
           Authorization:token
         }
