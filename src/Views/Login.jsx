@@ -29,7 +29,7 @@ function Login() {
       localStorage.setItem("currentUser", JSON.stringify(user));
       setUsername("");
       setPassword("");
-      
+      toast.success("Login Successfully...")
       setTimeout(() => {
         navigate("/dashboard");
       }, 3000);
@@ -121,6 +121,7 @@ function Login() {
           </form>
         </div>
       </div>
+      <Toaster/>
     </div>
   );
 }

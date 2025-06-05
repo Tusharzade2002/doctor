@@ -51,8 +51,11 @@ function Receptionlist() {
         ).unwrap();
         window.location.reload();
       } else {
+        console.log("submitted");
+        
         await dispatch(registerReception(formdata)).unwrap();
-        window.location.reload()
+    
+        console.log("submitted1");
       }
       setformdata({
         rID: "",
@@ -69,8 +72,9 @@ function Receptionlist() {
       setisEditing(false);
       seteditingId(null);
       dispatch(getReceptionById());
+      window.location.reload()
     } catch (err) {
-      console.log("errr");
+      console.log("errr:",err);
     }
   };
 
@@ -108,6 +112,9 @@ const [deleteid,setdeleteid]=useState(null)
   // update reception data by id
 
   const handleupdate = (item) => {
+     setcreate(true);
+    setisEditing(true);
+    seteditingId(item._id || item.id);
     setformdata({
       rID: item.rID || "",
       name: item.name || "",
@@ -119,16 +126,14 @@ const [deleteid,setdeleteid]=useState(null)
       password: "", // You may not want to prefill password
       _id: item._id,
     });
-    setcreate(true);
-    setisEditing(true);
-    seteditingId(item._id || item.id);
+   
   };
 
   return (
-    <div className="flex">
-      <Sidebar />
+    <div className="flex w-full">
+      <Sidebar className="w-[20%]"/>
 
-      <div className="w-full ">
+      <div className="flex flex-col ms-3 w-[80%]">
         <div>Receptionlist</div>
         <h1>localhost:8000/admin/allreceptionist</h1>
         <h1>http://localhost:8000/admin/registerreceptionist</h1>
@@ -377,27 +382,27 @@ const [deleteid,setdeleteid]=useState(null)
           <table class="table table-bordered w-full">
             <thead className="text-gray-700 bg-gray-100">
               <tr>
-                <th className="px-4 py-2 border" scope="col">cIN</th>
-                <th className="px-4 py-2 border" scope="col">Name</th>
-                <th className="px-4 py-2 border" scope="col">Username</th>
-                <th className="px-4 py-2 border" scope="col">Email</th>
-                <th className="px-4 py-2 border" scope="col">Date Of Birth</th>
-                <th className="px-4 py-2 border" scope="col">phone number</th>
-                <th className="px-4 py-2 border" scope="col">Gender</th>
-                <th className="px-4 py-2 border" scope="col">Action</th>
+                <th className="px-2 py-2 border" scope="col">cIN</th>
+                <th className="px-2 py-2 border" scope="col">Name</th>
+                <th className="px-2 py-2 border" scope="col">Username</th>
+                <th className="px-2 py-2 border" scope="col">Email</th>
+                <th className="px-2 py-2 border" scope="col">Date Of Birth</th>
+                <th className="px-2 py-2 border" scope="col">phone number</th>
+                <th className="px-2 py-2 border" scope="col">Gender</th>
+                <th className="px-2 py-2 border" scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
               {Receptiondata.map((item, index) => {
                 return (
                   <tr className="hover:bg-gray-100">
-                    <th className="px-4 py-2 border">{item.rID}</th>
-                    <td className="px-4 py-2 border">{item.name}</td>
-                    <td className="px-4 py-2 border">{item.username}</td>
-                    <td className="px-4 py-2 border">{item.email}</td>
-                    <td className="px-4 py-2 border">{item.dateOfBirth}</td>
-                    <td className="px-4 py-2 border">{item.phoneNumber}</td>
-                    <td className="px-4 py-2 border">{item.gender}</td>
+                    <th className="px-2 py-2 border">{item.rID}</th>
+                    <td className="px-2 py-2 border max-w-44">{item.name}</td>
+                    <td className="px-2 py-2 border max-w-44">{item.username}</td>
+                    <td className="px-2 py-2 border max-w-44 overflow-x-clip ">{item.email}</td>
+                    <td className="px-2 py-2 border">{item.dateOfBirth}</td>
+                    <td className="px-2 py-2 border">{item.phoneNumber}</td>
+                    <td className="px-2 py-2 border">{item.gender}</td>
                     <td>
                       <div className="flex justify-around">
                         <div

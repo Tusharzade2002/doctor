@@ -4,7 +4,7 @@ import Sidebar from './Component/Sidebar'
 function Appointment() {
   return (
     <div className='flex'>
-        <Sidebar/>
+        <Sidebar />
        <div> 
        <h1>Appointment</h1> 
         </div>

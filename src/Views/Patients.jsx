@@ -122,9 +122,9 @@ function Patients() {
   };
 
   return (
-    <div className="flex ">
-      <Sidebar />
-      <div className="flex flex-col w-full">
+    <div className="flex relative w-full">
+      <Sidebar className="w-[20%] "/>
+      <div className="flex flex-col ms-3 w-[80%]">
         <div>
           <div>Patients</div>
           <h1>localhost:8000/admin/getallpatient</h1>

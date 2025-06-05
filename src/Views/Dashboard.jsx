@@ -56,7 +56,7 @@ function Dashboard() {
     }, []);
   return (
     <div className='flex'>
-         <Sidebar/>
+         <Sidebar />
          
          <div >
                 <div className='flex justify-center '>
@@ -78,11 +78,7 @@ function Dashboard() {
                           </Link>
                  </div>
                 <div>
-                  <div>
-                  </div>
-                  <div>
-
-                  </div>
+                
                 </div>
          </div>
     </div>

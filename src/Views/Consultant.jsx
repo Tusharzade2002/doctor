@@ -172,10 +172,10 @@ function Home() {
   };
 
   return (
-    <div className="flex relative">
-      <Sidebar />
+    <div className="flex relative w-full">
+      <Sidebar className="w-[20%] "/>
 
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col ms-3 w-[80%]">
         <div>
           <h1>Home</h1>
           <p>Welcome to the home page!</p>

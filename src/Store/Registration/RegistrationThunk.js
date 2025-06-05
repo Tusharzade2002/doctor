@@ -4,11 +4,13 @@ import axios from "axios";
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (formData, thunkAPI) => {
+  
     try {
       const response = await axios.post(
         "http://localhost:8000/admin/register",
         formData
       );
+      const state = thunkAPI.getState();
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(
@@ -212,7 +214,8 @@ export const getallreception = createAsyncThunk(
 //create reception list
 export const registerReception = createAsyncThunk(
   "auth/registerReception",
-  async (formData, { rejectWithValue }) => {
+  async (formData, { thunkAPI }) => {
+    const state = thunkAPI.getState();
     try {
       const user = JSON.parse(localStorage.getItem("currentUser"));
       const token = user?.token;
@@ -225,6 +228,8 @@ export const registerReception = createAsyncThunk(
           },
         }
       );
+      console.log("formdata:",formData);
+      
       console.log(response.data.data);
 
       return response.data, data;

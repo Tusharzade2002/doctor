@@ -1,9 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import logo from "../../assets/images(1).png";
-import { LayoutDashboard } from "lucide-react";
+import React from 'react'
+import {Link} from "react-router-dom"
+import { LayoutDashboard, Menu } from "lucide-react"; 
 function Sidebar() {
-  const handlelogout = () => {
+   const handlelogout = () => {
     localStorage.removeItem("currentUser");
 
     setTimeout(() => {
@@ -11,57 +10,28 @@ function Sidebar() {
     }, [3000]);
   };
   return (
-    <div className="bg-black text-white   w-[20%] h-[100vh]">
-      <div>
-        <Link to="/dashboard">
-          <img
-            src={logo}
-            alt=""
-            className="block m-auto h-10 my-3 rounded-sm"
-          />
-        </Link>
-      </div>
-      <div className="flex flex-col justify-center items-center">
-        <Link className="flex justify-center w-full items-center" to="/dashboard">
-          <LayoutDashboard />
-          <button className="hover:bg-slate-700 px-2  rounded-xl text-2xl hover:shadow-2xl my-4">
-            Dashboard
-          </button>
-        </Link>
-        <Link className="flex justify-center w-full items-center" to="/consultant">
-          <LayoutDashboard />
-          <button className="hover:bg-slate-700 px-2  rounded-xl text-2xl hover:shadow-2xl my-4">
-            Consultant
-          </button>
-        </Link>
-        <Link className="flex justify-center w-full items-center" to="/patient">
-          <LayoutDashboard />
-          <button className="hover:bg-slate-700 px-2 rounded-xl  text-2xl hover:shadow-2xl my-4">
-            Patients
-          </button>
-        </Link>
-        <Link className="flex justify-center w-full items-center" to="/receptionlist">
-          <LayoutDashboard />
-          <button className="hover:bg-slate-700 px-2 rounded-xl text-2xl hover:shadow-2xl my-4">
-            Receptionlist
-          </button>
-        </Link>
-      
-        <Link className="flex justify-center w-full items-center" to="/department">
-          <LayoutDashboard />
-          <button className="hover:bg-slate-700 px-2  rounded-xl text-2xl hover:shadow-2xl my-4">
-            Department
-          </button>
-        </Link>
-        <button
-          onClick={handlelogout}
-          className="bg-red-500 rounded-sm px-7 py-2"
-        >
-          Logout
-        </button>
-      </div>
+    <div className=' bg-black  text-white h-[100vh]'>
+        <div className='flex flex-col'>
+           <h1 className='m-9 text-2xl font-bold inline'>Doctor App</h1>
+          <div className='flex flex-col justify-center items-start ms-8'>
+           <Link className='flex my-4 text-xl' to="/dashboard"><LayoutDashboard className='me-3'/>  DashBoard</Link>
+           <Link className='flex my-4 text-xl' to="/consultant" ><LayoutDashboard className='me-3'/> Consultant</Link>
+           <Link className='flex my-4 text-xl' to="/patient"> <LayoutDashboard className='me-3'/> Patient</Link>
+           <Link className='flex my-4 text-xl' to="/receptionlist"><LayoutDashboard className='me-3'/> Receptionlist</Link>
+           <Link className='flex my-4 text-xl' to="/department"><LayoutDashboard className='me-3'/> Department</Link>
+              <button
+              onClick={handlelogout}
+              className="bg-red-500 rounded-sm px-7 py-2 mt-5"
+            >
+              Logout
+            </button>
+
+            
+           
+           </div>
+        </div>
     </div>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar
